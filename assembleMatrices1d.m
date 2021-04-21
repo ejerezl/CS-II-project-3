@@ -66,9 +66,9 @@ K(num_edges,num_edges) = k1(cells(edges(1,2),1));
 D=-G';
 A = -D*(K*G);
 
-A(:,1) = 0;
+A(1,:) = 0;
 A(1,1) =1;
-A(:,end) = 0;
+A(end,:) = 0;
 A(end,end) = 1;
 
 
