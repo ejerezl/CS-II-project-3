@@ -23,9 +23,14 @@ u = A\b;
 
 % Reshape and plot
 [X,Y] = meshgrid(0:dy:1,0:dx:1);
+% to have coordinates x and y separated
 U = reshape(u,nx,ny);
 figure(1)
+%gcf returns the current figure it would be the same to do figuree=fig(1) and
+%then in the set function instead of gcf write figure
+%position params: [left, bottom, width, height]
 set(gcf,'Position',[100 100 1200 500])
+%subplot(m,n,p) divide la figura actual en una cuadrícula de m por n y crea ejes en la posición especificada por p
 subplot(1,2,1);
 surf(X,Y,U)
 axis([0 1 0 1])
