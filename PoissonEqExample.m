@@ -1,8 +1,8 @@
 % Poisson equation: -Div(k(x,y)Grad(u)) = f
 
 %Diffusivity
-k = @(x,y) 1+(x-1).*(y-1);
-
+%k = @(x,y) 1+(x-1).*(y-1);
+k = @(x,y) 1;
 % Exact solution
 u_fabricated = @(x,y) sin(2*pi*x).*sin(2*pi*y);
 
@@ -22,7 +22,7 @@ dy = 1/(ny-1);
 u = A\b;
 
 % Reshape and plot
-[X,Y] = meshgrid(0:dy:1,0:dx:1);
+[X,Y] = meshgrid(0:dx:1,0:dy:1);
 % to have coordinates x and y separated
 U = reshape(u,nx,ny);
 figure(1)
@@ -42,6 +42,9 @@ xlabel('x')
 ylabel('y')
 title('u')
 colorbar()
+
+% Compute error without knowing real solution
+error2 = (energyError(U,-(K.*G)*u, 1, dx, dy, cells,nx, ny))^(1/2)
 
 
 % Compute the flux vector [F_1,F_2] at the cells and plot with quiver

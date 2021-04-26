@@ -31,7 +31,12 @@ end
 %Set edges connected to interior cells
 for j = 2:num_cells_y-1
     for i = 2:num_cells_x-1
-        cells(num_cells_x*(j-1)+i,3:6) = [num_edges_vertical+(i-1)*(num_cells_y-1)+(j-1), (j-1)*(num_cells_x-1)+i, num_edges_vertical + (i-1)*(num_cells_y-1)+ j, (j-1)*(num_cells_x-1)+i-1];
+        cell = num_cells_x*(j-1)+i;
+        left = (j-1)*(num_cells_x-1)+i-1;
+        right = left+1;
+        bottom = num_edges_vertical+(i-1)*(num_cells_y-1)+(j-1);
+        top = bottom + 1;
+        cells(cell,3:6) = [bottom, right, top, left];
     end
 end
 
