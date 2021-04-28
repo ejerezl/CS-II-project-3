@@ -41,19 +41,10 @@ for i=1:num_edges
     G(i,i)=1/dx;
 end
 for i=1:(num_edges-1)
-    G(i+1,i) = -1/dx;
+    G(i,i+1) = -1/dx;
 end
 G = sparse(G);
 
-% %Div operator
-% D = zeros(num_cells, num_edges);
-% for i=1:num_edges
-%     D(i,i) = -1/dx;
-% end
-% for i=1:(num_edges-1)
-%     D(i,i+1) = 1/dx;
-% end
-% D = sparse(D);
 
 %K operator
 K = zeros(num_edges,num_edges);
@@ -66,9 +57,11 @@ K(num_edges,num_edges) = k1(cells(edges(1,2),1));
 D=-G';
 A = -D*(K*G);
 
+A(:,1) = 0;
 A(1,:) = 0;
 A(1,1) =1;
 A(end,:) = 0;
+A(:,end) = 0;
 A(end,end) = 1;
 
 
@@ -77,6 +70,8 @@ b = ones(num_cells,1);
 for i=1:num_cells
     b(i) = f(cells(i));
 end
+b(1) = 0;
+b(end) = 0;
 
 %Hack boundary cells
 % boundary_cells = zeros(1,2);
