@@ -60,8 +60,17 @@ title('u_{fabricated}')
 
 
 [err_true,err_calc, err_v] = energy_error_norm1(u, q, nx, edges, k1);
+disp(err_true)
+disp(err_calc)
 disp(err_true/err_v)
 disp(err_calc/err_v)
+
+% Runge Kutta type 1 error estimate
+
+%2nd entry: Order of convergence, 3rd entry: ratio between h1 and h2
+[err1, err2] = rktype1(nx, 1.4, 8); 
+disp(err1);
+disp(err2);
 
 %Convergence rate
 convergence_error = zeros(4,1);
@@ -74,9 +83,6 @@ for i=1:4
     nx = 2*nx;
 end
 
-disp(convergence_error)
-disp(grid_refinery)
-
 loglog(grid_refinery, convergence_error)
 title('Convergence Plot');
 hold on
@@ -87,4 +93,6 @@ legend({'numerical scheme','10^{1.4}'}, 'Location','northwest')
 xlabel('gridsize')
 ylabel('error')
 xlim([0 0.07])
+
+
 
