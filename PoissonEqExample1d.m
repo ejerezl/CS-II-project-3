@@ -31,9 +31,15 @@ plot(X,u)
 
 % Calculate fabricated solution vector and compute error in "L2-norm"
 u_fabricated_vect = u_fabricated(cells(:,1));
-error = norm(u-u_fabricated_vect,2)*sqrt(dx);
+error = norm(u-u_fabricated_vect,2)*sqrt(dx)
 xlabel('x')
 title('u')
+<<<<<<< HEAD
+=======
+colorbar()
+
+energyError = (energyError1d(u, -(K*G)*u, 1, dx, cells, nx))^(1/2)
+>>>>>>> c94fd49664fa6790b9d39b8ff665b7936bd309c9
 
 %Compute and plot flux vector
 X = zeros(nx+1,1);
