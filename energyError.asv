@@ -63,15 +63,7 @@ for i = 2:cells_x-1
     y1=cells(cell,2);
     y2=cells(cell,2)+dy/2;
     
-    [a2, a3, a4, ~,~,~,~] = interpolation(0, cells(cell,:),F,dx,dy/2,A,B,C,D,x1,y1);
-    Fr = F(cells(cell, 4));
-    Fl = F(cells(cell,6));
-    Ft = F(cells(cell,5));
-    Fb = Ft - (y2-y1);
-    b1 = Fl + x1*(Fl-Fr)/(x2-x1);
-    b2 = (Fr-Fl)/(x2-x1);
-    b3 = Fb + y1*(Fb-Ft)/(y2-y1);
-    b4 = (Ft-Fb)/(y2-y1);
+    [a2, a3, a4, b1, b2, b3, b4] = interpolation(0, cells(cell,:),F,dx,dy/2,A,B,C,D,x1,y1);
     
     % this error correspond to the integral in that cell of r*r
     error1=(b1^2+b3^2)*dx*(dy/2)+b1*b2*(x2^2-x1^2)*(dy/2)+b3*b4*dx*(y2^2-y1^2)+(b2^2*(x2^3-x1^3)*(dy/2)+b4^2*dx*(y2^3-y1^3))/3;
@@ -136,16 +128,7 @@ for i = 2:cells_x-1
     y1=cells(cell,2)-dy/2;
     y2=cells(cell,2);
     
-    [a2, a3, a4, ~,~,~,~] = interpolation(0, cells(cell,:),F,dx,dy/2,A,B,C,D,x1,y1);
-    
-    Fr = F(cells(cell, 4));
-    Fl = F(cells(cell,6));
-    Fb = F(cells(cell,3));
-    Ft = Fb + (y2-y1);
-    b1 = Fl + x1*(Fl-Fr)/(x2-x1);
-    b2 = (Fr-Fl)/(x2-x1);
-    b3 = Fb + y1*(Fb-Ft)/(y2-y1);
-    b4 = (Ft-Fb)/(y2-y1);
+    [a2, a3, a4, b1, b2, b3, b4] = interpolation(0, cells(cell,:),F,dx,dy/2,A,B,C,D,x1,y1);
     
     % this error correspond to the integral in that cell of r*r
     error1=(b1^2+b3^2)*dx*(dy/2)+b1*b2*(x2^2-x1^2)*(dy/2)+b3*b4*dx*(y2^2-y1^2)+(b2^2*(x2^3-x1^3)*(dy/2)+b4^2*dx*(y2^3-y1^3))/3;
