@@ -8,6 +8,7 @@ u_fabricated = @(x,y) sin(2*pi*x).*sin(2*pi*y);
 
 %RHS function
 f = @(x,y) 8*pi*pi*sin(2*pi*x).*sin(2*pi*y).*k(x,y)-(2*pi*cos(2*x*pi).*sin(2*pi*y).*(y-1)+2*pi*sin(2*pi*x).*cos(2*pi*y).*(x-1));
+%f = @(x,y) 1;
 
 %Determine number of cells in each direction
 nx = 17;
@@ -66,3 +67,26 @@ xlabel('x')
 ylabel('y')
 title('u_{fabricated}')
 colorbar()
+
+
+%Convergence rate
+convergence_error = zeros(4,1);
+grid_refinery = zeros(4,1);
+for i=1:4
+    [conv_rate, grid_size] = convergence(nx);
+    err1 = [conv_rate, grid_size];
+    convergence_error(i) = err1(1);
+    grid_refinery(i) = err1(2);
+    nx = 2*nx;
+end
+
+loglog(grid_refinery, convergence_error)
+title('Convergence Plot');
+hold on
+y=grid_refinery;
+loglog(grid_refinery,y)
+hold off
+legend({'numerical scheme','10^1'}, 'Location','northwest')
+xlabel('gridsize')
+ylabel('error')
+xlim([0 0.07])
