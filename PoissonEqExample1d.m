@@ -28,11 +28,12 @@ plot(X,u)
 
 % Calculate fabricated solution vector and compute error in "L2-norm"
 u_fabricated_vect = u_fabricated(cells(:,1));
-error = norm(u-u_fabricated_vect,2)*sqrt(dx);
+error = norm(u-u_fabricated_vect,2)*sqrt(dx)
 xlabel('x')
 title('u')
 colorbar()
 
+energyError = (energyError1d(u, -(K*G)*u, 1, dx, cells, nx))^(1/2)
 
 % Compute the flux vector [F_1,F_2] at the cells and plot with quiver
 [F_1] = flux1d(G,K,u,cells,nx);
