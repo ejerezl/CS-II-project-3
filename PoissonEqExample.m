@@ -7,8 +7,8 @@ k = @(x,y) 1;
 u_fabricated = @(x,y) sin(2*pi*x).*sin(2*pi*y);
 
 %RHS function
-f = @(x,y) 8*pi*pi*sin(2*pi*x).*sin(2*pi*y).*k(x,y)-(2*pi*cos(2*x*pi).*sin(2*pi*y).*(y-1)+2*pi*sin(2*pi*x).*cos(2*pi*y).*(x-1));
-%f = @(x,y) 1;
+%f = @(x,y) 8*pi*pi*sin(2*pi*x).*sin(2*pi*y).*k(x,y)-(2*pi*cos(2*x*pi).*sin(2*pi*y).*(y-1)+2*pi*sin(2*pi*x).*cos(2*pi*y).*(x-1));
+f = @(x,y) 1;
 
 %Determine number of cells in each direction
 nx = 17;
@@ -45,7 +45,10 @@ title('u')
 colorbar()
 
 % Compute error without knowing real solution
-error2 = (energyError(U,-(K.*G)*u, 1, dx, dy, cells,nx, ny))^(1/2)
+[energy_error, conservation_integral] = energyError(U,-(K.*G)*u, 1, dx, dy, cells,nx, ny)
+majorant = energy_error + (1/(sqrt(1)*pi))*conservation_integral
+energy_norm = norm(G*(u-u_fabricated_vect),2)*sqrt(dx*dy)
+relative_error = energy_error/norm(G*u,2)*sqrt(dx*dy)
 
 
 % Compute the flux vector [F_1,F_2] at the cells and plot with quiver

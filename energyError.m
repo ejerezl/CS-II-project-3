@@ -3,9 +3,10 @@
 % U = matrix with potentials
 % F = flux
 % k = from PDE (considering it a constant)
-function error = energyError(U, F, k, dx, dy, cells, cells_x, cells_y)
+function [energy_error, conservation_integral] = energyError(U, F, k, dx, dy, cells, cells_x, cells_y)
 
-error = 0;
+energy_error = 0;
+conservation_integral = 0;
 
 %For computing the aproximation of the error we need to compute two
 %integrals
@@ -44,7 +45,10 @@ for j=2:cells_y-1
         error3=(b1*a2+b3*a3)*dx*dy+(x2^2-x1^2)*dy*(b2*a2+b3*a4)/2+dx*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
 
         % Add error at each cell plus the previously computed
-        error=error+error1/k+k*error2+2*error3;
+        energy_error=energy_error+error1/k+k*error2+2*error3;
+        
+        %Computing the conservation integral when f = 1
+        conservation_integral = conservation_integral + (1-b2-b4)^2*(x2-x1)*(y2-y1);
     end
 end
 
@@ -81,7 +85,9 @@ for i = 2:cells_x-1
     error3=(b1*a2+b3*a3)*dx*(dy/2)+(x2^2-x1^2)*(dy/2)*(b2*a2+b3*a4)/2+dx*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
 
     % Add error at each cell plus the previously compute
-    error=error+error1/k+k*error2+2*error3;
+    energy_error=energy_error+error1/k+k*error2+2*error3;
+    %Computing the conservation integral when f = 1
+    conservation_integral = conservation_integral + (1-b2-b4)^2*(x2-x1)*(y2-y1);
 end
 
 % Right cells (Except corners)
@@ -118,7 +124,10 @@ for j = 2:cells_y - 1
     error3=(b1*a2+b3*a3)*(dx/2)*dy+(x2^2-x1^2)*dy*(b2*a2+b3*a4)/2+(dx/2)*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
 
     % Add error at each cell plus the previously compute
-    error=error+error1/k+k*error2+2*error3;
+    energy_error=energy_error+error1/k+k*error2+2*error3;
+    
+    %Computing the conservation integral when f = 1
+    conservation_integral = conservation_integral + (1-b2-b4)^2*(x2-x1)*(y2-y1);
 end
 
 %Top cells (Except corners)
@@ -155,7 +164,10 @@ for i = 2:cells_x-1
     error3=(b1*a2+b3*a3)*dx*(dy/2)+(x2^2-x1^2)*(dy/2)*(b2*a2+b3*a4)/2+dx*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
 
     % Add error at each cell plus the previously compute
-    error=error+error1/k+k*error2+2*error3;
+    energy_error=energy_error+error1/k+k*error2+2*error3;
+    
+    %Computing the conservation integral when f = 1
+    conservation_integral = conservation_integral + (1-b2-b4)^2*(x2-x1)*(y2-y1);
 end
 
 %Left cells (Except corners)
@@ -193,8 +205,113 @@ for j = 2:cells_y - 1
     error3=(b1*a2+b3*a3)*(dx/2)*dy+(x2^2-x1^2)*dy*(b2*a2+b3*a4)/2+(dx/2)*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
 
     % Add error at each cell plus the previously compute
-    error=error+error1/k+k*error2+2*error3;
+    energy_error=energy_error+error1/k+k*error2+2*error3;
+    
+    %Computing the conservation integral when f = 1
+    conservation_integral = conservation_integral + (1-b2-b4)^2*(x2-x1)*(y2-y1);
 end
+
 %Corners
+%Left bottom corner
+cell = 1;
+i=1;
+j=1;
+A = U(i,j);
+B = (U(i,j)+U(i+1,j))/2;
+C = (U(i,j)+U(i,j+1))/2;
+D = (U(i,j)+U(i+1,j)+U(i,j+1)+U(i+1,j+1))/4;
+    
+%Coordinates of new cell
+x1=cells(cell,1);
+x2=cells(cell,1)+dx/2;
+y1=cells(cell,2);
+y2=cells(cell,2)+dy/2;
+
+[a2,a3,a4,~,~,~,~] = interpolation(0, cells(cell,:), F, dx/2,dy/2, A,B,C,D,x1,y1);
+% This error correspond to the integral in that cell of delta v * delta v
+error2=(a2^2+a3^2)*(dx/2)*(dy/2)+a2*a4*(dx/2)*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*(dy/2)+a4^2*((x2^3-x1^3)*(dy/2)+(dx/2)*(y2^3-y1^3))/3;
+% Add error at each cell plus the previously compute
+energy_error=energy_error+k*error2;
+%Computing the conservation integral when f = 1
+conservation_integral = conservation_integral + (x2-x1)*(y2-y1);
+conservation_integral = sqrt(conservation_integral);
+energy_error = sqrt(energy_error);
+
+%right bottom corner
+i = cells_x;
+j = 1;
+cell = cells_x*(j-1)+i;
+
+A = (U(i-1,j)+U(i, j))/2;
+B = U(i,j);
+C = (U(i,j)+U(i-1,j)+U(i,j+1)+U(i-1,j+1))/4;
+D = (U(i,j)+U(i,j+1))/2;
+    
+%Coordinates of new cell
+x1=cells(cell,1)-dx/2;
+x2=cells(cell,1);
+y1=cells(cell,2);
+y2=cells(cell,2)+dy/2;
+
+[a2,a3,a4,~,~,~,~] = interpolation(0, cells(cell,:), F, dx/2,dy/2, A,B,C,D,x1,y1);
+% This error correspond to the integral in that cell of delta v * delta v
+error2=(a2^2+a3^2)*(dx/2)*(dy/2)+a2*a4*(dx/2)*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*(dy/2)+a4^2*((x2^3-x1^3)*(dy/2)+(dx/2)*(y2^3-y1^3))/3;
+% Add error at each cell plus the previously compute
+energy_error=energy_error+k*error2;
+%Computing the conservation integral when f = 1
+conservation_integral = conservation_integral + (x2-x1)*(y2-y1);
+
+%Left upper corner
+i = 1;
+j = cells_y;
+cell = cells_x*(j-1)+i;
+
+A = (U(i,j)+U(i, j-1))/2;
+B = (U(i,j)+U(i+1,j)+U(i,j-1)+U(i+1,j-1))/4;
+C = U(i,j);
+D = (U(i,j)+U(i+1,j))/2;
+    
+%Coordinates of new cell
+x1=cells(cell,1);
+x2=cells(cell,1)+dx/2;
+y1=cells(cell,2)-dy/2;
+y2=cells(cell,2);
+
+[a2,a3,a4,~,~,~,~] = interpolation(0, cells(cell,:), F, dx/2,dy/2, A,B,C,D,x1,y1);
+% This error correspond to the integral in that cell of delta v * delta v
+error2=(a2^2+a3^2)*(dx/2)*(dy/2)+a2*a4*(dx/2)*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*(dy/2)+a4^2*((x2^3-x1^3)*(dy/2)+(dx/2)*(y2^3-y1^3))/3;
+% Add error at each cell plus the previously compute
+energy_error=energy_error+k*error2;
+%Computing the conservation integral when f = 1
+conservation_integral = conservation_integral + (x2-x1)*(y2-y1);
+
+
+%Right upper corner
+i = cells_x;
+j = cells_y;
+cell = cells_x*(j-1)+i;
+
+A = (U(i,j)+U(i-1,j)+U(i,j-1)+U(i-1,j-1))/4;
+B = (U(i,j)+U(i,j-1))/2;
+C = (U(i,j)+U(i-1,j))/2;
+D = U(i,j);
+    
+%Coordinates of new cell
+x1=cells(cell,1)-dx/2;
+x2=cells(cell,1);
+y1=cells(cell,2)-dy/2;
+y2=cells(cell,2);
+
+[a2,a3,a4,~,~,~,~] = interpolation(0, cells(cell,:), F, dx/2,dy/2, A,B,C,D,x1,y1);
+% This error correspond to the integral in that cell of delta v * delta v
+error2=(a2^2+a3^2)*(dx/2)*(dy/2)+a2*a4*(dx/2)*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*(dy/2)+a4^2*((x2^3-x1^3)*(dy/2)+(dx/2)*(y2^3-y1^3))/3;
+% Add error at each cell plus the previously compute
+energy_error=energy_error+k*error2;
+%Computing the conservation integral when f = 1
+conservation_integral = conservation_integral + (x2-x1)*(y2-y1);
+
+
+conservation_integral = sqrt(conservation_integral);
+energy_error = sqrt(energy_error);
 
 end
