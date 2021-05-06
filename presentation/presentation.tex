@@ -18,7 +18,7 @@
 \setlength\parindent{0pt}
 \begin{document}
     \maketitle
-    \section*{\large{Introduction}}
+    \subsection*{Introduction}
     Our goal for this project is to give accurate error bounds for approximated solutions of a problem described by an elliptic PDE. In concrete, we will focus on the problem of thermal conduction, that is, the transfer of internal energy by microscopic collisions of particles and movement of electrons within a body. More in concrete, we will rely on the law of heat conduction, also known as Fourier's law.
     \begin{align*}
         \bm{q} = -k \div T
@@ -49,7 +49,7 @@
     \end{align*}
     But we will only consider a case where flux is linear ant the thermal conductivity is constant.
     
-    \section*{\large{Error bounds computations}}
+    \subsection*{Error bounds computations}
     Our main goal is for an approximated solution $v$, check how good it is compared to the real solution $u$ but without knowing it. The idea is that instead of measuring $\norm*{u-v} = \norm*{e_v}$ (which is the more natural way of measuring the error between both solutions), we will try to give an upper bound (called majorant) of $\norm*{k^{\frac{1}{2}}\div e_v}$. By integrating the PDE and some more computations we obtain:
     \begin{align*}
         \norm*{k^{\frac{1}{2}}\div e:v} \leq \norm*{k^{-\frac{1}{2}}(\bm{r}+k\div v)} + C_{\Omega,k}\norm*{f-\div \bm{r}} \equiv \mathcal{M}(v,r;f)
@@ -74,6 +74,28 @@
     \end{align*}
 
     So these are the computations that we will check for our concrete cases. But first, let us talk about the method used to do the computations:
-    \subsection*{Erlend's method}
-    In our concrete problem we will be working in the unit square: we will divide it in cells, with its correspondent surrounding edges (all cells and edges numbered following a concrete order). For each cell, we will approximate the potential ($v_h \approx u$), and the flux satisfies an integral form of conservation, so we can compute the flux ($r_h$) in every edge surrounding the cell using finite difference. Interpolating both flux and potential we can then obtain functions smooth enough to work with them and apply all the mentioned before. 
+    \subsection*{Implementation of the method}
+    In our concrete problem we will be working in the unit square (unit interval in the case of 1D): we will divide it in cells, with its correspondent surrounding edges (all cells and edges numbered following a concrete order). For each cell, we will approximate the potential ($v_h \approx u$), and the flux satisfies an integral form of conservation, so we can compute the flux ($r_h$) in every edge surrounding the cell using finite difference. Interpolating both flux and potential we can then obtain functions smooth enough to work with them and apply all the mentioned before.
+    This is done as showed in the picture: for inner cells it is a simple interpolation cause we have all potential and fluxes needed, but for borders it is more complicated. We will rely on the following results for borders that are not corners:
+
+    If we are considering the 1D case, following the conservation law for cell $i$ we have:
+    \begin{align*}
+        q_{i+1} - q_i =  \int_{w_i} f
+    \end{align*}
+
+    This can be applied the same way in the 2D case, component by component. For the particular case considered in our drawing we would have that the flux y the y-component is an interpolation between $F_T$ and $F_B$, while for the flux in the component x we need to compute $F_L$, and that is done following the previous said about the conservation law:
+    \begin{align*}
+        F_L &= F_R - \int\limits_{x_1}^{x_2} f(x,y) \,dx\ \\
+        &=  F_R - f(x,y)\Delta x \quad \text{(Cause we are considering f being constant)}
+    \end{align*}
+
+    The remaining cells are then the corners, and by simplification we have assumed a flux equal to zero in this regions.
+
+    \subsection*{Results in 1D}
+    Once we have explained the procedure, let us dive in the numerical results.
+
+    \subsection*{Results in 2D}
+
+    \subsection*{Conclusion}
+    \subsection*{References}
 \end{document}
