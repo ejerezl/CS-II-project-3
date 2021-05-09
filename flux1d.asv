@@ -23,7 +23,7 @@ else
     %left boundary, x_1/2 = dx/2
     q(1) = q(2) + k(dx/2)*2*pi*cos(2*pi*dx/2) - 2*pi*k(0)*cos(0);
     %right boundary, x_(N-1/2) = 1-dx/2
-    q(end) = q(end-1) - 2*pi*k(1)*cos(2*pi*1) + 2*pi*k(1-dx/2)*cos(2*pi*(1-dx/2));
+    q(end) = q(end-1) - 2*pi*k(1)*cos(2*pi*1)  2*pi*k(1-dx/2)*cos(2*pi*(1-dx/2));
 end
 
     

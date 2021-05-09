@@ -52,7 +52,7 @@ for i=2:num_edges-1
     K(i,i) = 2/(1/k1(cells(edges(i,2),1))+1/k1(cells(edges(i,3),1)));
 end
 K(1,1) = k1(cells(edges(1,3),1));
-K(num_edges,num_edges) = k1(cells(edges(1,2),1));
+K(num_edges,num_edges) = k1(cells(edges(num_edges,2),1));
 
 D=-G';
 A = -D*(K*G);

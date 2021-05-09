@@ -6,13 +6,13 @@ function [err1, err2] = rktype1(nx, a, k)
 % Poisson equation: -Div(k(x,y)Grad(u)) = f
 
 %Diffusivity
-%k1 = @(x) 1+(x-1).*(1/4-1);
 k1 = @(x) 1;
+k_const = true;
 
 
 %RHS function
-%f = @(x) 4*pi*pi*sin(2*pi*x).*k1(x); %-(2*pi*cos(2*x*pi).*(1/4-1));
 f = @(x) 1;
+f_const = true;
 
 %%% u_h1, h1 = dx %%%
 %Determine number of cells
@@ -32,7 +32,7 @@ X(end) = 1;
 for i=2:nx
     X(i) = 0.5*dx + dx*(i-2);
 end
-q = flux1d(k1,u1,dx,nx);
+q = flux1d(k1,u1,dx,nx, k_const, f_const);
 
 grid1 = zeros(nx1+1,1);
 grid1(2:(nx1)) = edges(:,1,1);
@@ -59,7 +59,7 @@ X(end) = 1;
 for i=2:nx2
     X(i) = 0.5*dx2 + dx2*(i-2);
 end
-q = flux1d(k1,u2,dx2,nx2);
+q = flux1d(k1,u2,dx2,nx2, k_const, f_const);
 
 %%%%%% Calculate energy norm of u_h1-u_h2 %%%%%
 

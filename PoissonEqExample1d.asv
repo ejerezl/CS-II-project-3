@@ -95,15 +95,15 @@ if k_const && f_const
     % Runge Kutta type 1 error estimate
 
     %2nd entry: Order of convergence, 3rd entry: ratio between h1 and h2
-    [err1, err2] = rktype1(nx, 1, 8); 
-    fprintf('True error: %d.\n', err1);
-    fprintf('Runge-Kutta estimate: %d.\n', err2);
+%     [err1, err2] = rktype1(nx, 1, 8); 
+%     fprintf('True error: %d.\n', err1);
+%     fprintf('Runge-Kutta estimate: %d.\n', err2);
 
     %Convergence rate
     convergence_error = zeros(4,1);
     grid_refinery = zeros(4,1);
     for i=1:4
-        [conv_rate, grid_size, err_calc, err_pot, err_v] = convergence1(nx);
+        [conv_rate, grid_size, err_calc, err_pot] = convergence1(nx);
         err1 = [conv_rate, grid_size];
         convergence_error(i) = err1(1);
         grid_refinery(i) = err1(2);
@@ -114,7 +114,7 @@ if k_const && f_const
         fprintf('error of potential: %d.\n', err_pot);
         fprintf('relative true error: %d.\n', conv_rate/err_v);
         fprintf('relative calculated error: %d.\n', err_calc/err_v);
-        fprintf('efficiency index: %d.\n', (err_calc)/conv_rate)
+        fprintf('efficiency index: %d.\n', (err_calc)/err_true)
     end
     
     %Plot convergence
@@ -140,20 +140,20 @@ elseif k_const
     convergence_error = zeros(4,1);
     grid_refinery = zeros(4,1);
     for i=1:4
-        [conv_rate, grid_size, err_calc, err_cons, err_pot, err_v] = convergence2(nx);
+        [conv_rate, grid_size, err_calc, err_cons, err_pot] = convergence2(nx);
         err1 = [conv_rate, grid_size];
         convergence_error(i) = err1(1);
         grid_refinery(i) = err1(2);
         nx = 2*nx;
         disp(i)
-        fprintf('true error: %d.\n', conv_rate);
+        fprintf('true error: %d.\n', err_true);
         fprintf('calculated error: %d.\n', err_calc);
         fprintf('error of potential: %d.\n', err_pot);
         fprintf('conservation error %d.\n', c*err_cons);
-        fprintf('relative true error: %d.\n', conv_rate/err_v);
+        fprintf('relative true error: %d.\n', err_true/err_v);
         fprintf('relative calculated error: %d.\n', (err_calc+c*err_cons)/err_v);
-        fprintf('efficiency index: %d.\n', (err_calc+c*err_cons)/conv_rate)
-        fprintf('combined efficiency index: %d.\n', 3*(err_calc+c*err_cons)/(conv_rate + err_pot + c*err_cons))
+        fprintf('efficiency index: %d.\n', (err_calc+c*err_cons)/err_true)
+        fprintf('combined efficiency index: %d.\n', 3*(err_calc+c*err_cons)/(err_true + err_pot + c*err_cons))
     end
     
     %Plot convergence rate
@@ -177,20 +177,20 @@ else
     convergence_error = zeros(4,1);
     grid_refinery = zeros(4,1);
     for i=1:4
-        [conv_rate, grid_size, err_calc, err_cons, err_pot, err_v] = convergence3(nx);
+        [conv_rate, grid_size, err_calc, err_cons, err_pot] = convergence3(nx);
         err1 = [conv_rate, grid_size];
         convergence_error(i) = err1(1);
         grid_refinery(i) = err1(2);
         nx = 2*nx;
         disp(i)
-        fprintf('true error: %d.\n', conv_rate);
+        fprintf('true error: %d.\n', err_true);
         fprintf('calculated error: %d.\n', err_calc);
         fprintf('error of potential: %d.\n', err_pot);
         fprintf('conservation error %d.\n', c*err_cons);
-        fprintf('relative true error: %d.\n', conv_rate/err_v);
+        fprintf('relative true error: %d.\n', err_true/err_v);
         fprintf('relative calculated error: %d.\n', (err_calc+c*err_cons)/err_v);
-        fprintf('efficiency index: %d.\n', (err_calc+c*err_cons)/conv_rate)
-        fprintf('combined efficiency index: %d.\n', 3*(err_calc+c*err_cons)/(conv_rate + err_pot + c*err_cons))
+        fprintf('efficiency index: %d.\n', (err_calc+c*err_cons)/err_true)
+        fprintf('combined efficiency index: %d.\n', 3*(err_calc+c*err_cons)/(err_true + err_pot + c*err_cons))
     end
     
     %Plot convergence
