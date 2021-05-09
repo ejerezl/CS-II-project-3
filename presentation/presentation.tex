@@ -1,0 +1,101 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tcolorbox}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{physics}
+\usepackage{enumitem}
+\usepackage{bm}
+\usepackage{bbm}
+
+
+\usepackage[margin=1.1in]{geometry}
+\title{Interaction between PDE and geometry}
+\date{}
+
+\setlength\parindent{0pt}
+\begin{document}
+    \maketitle
+    \subsection*{Introduction}
+    Our goal for this project is to give accurate error bounds for approximated solutions of a problem described by an elliptic PDE. In concrete, we will focus on the problem of thermal conduction, that is, the transfer of internal energy by microscopic collisions of particles and movement of electrons within a body. More in concrete, we will rely on the law of heat conduction, also known as Fourier's law.
+    \begin{align*}
+        \bm{q} = -k \div T
+    \end{align*}
+    where 
+    \begin{enumerate}
+        \item[] $\bm{q}$ is the local heat flux density (heat flux density is the amount of energy that flows through a unit area per unit time),
+        \item[] $k$ is the materials' thermal conductivity,
+        \item[] $\div{T}$ is the temperature gradient.
+    \end{enumerate}
+    In general terms, it states that the rate of heat transfer through a material is proportional to the negative gradient in the temperature and to the area through which the heat flows. With the previous PDE we will look at the flow rates or fluxes of energy locally. \\
+    Our work will be done in 1-D and 2-D for different concrete cases. In the 1D case, Fourier's law is of the following way:
+    \begin{align*}
+        &\frac{\partial q}{\partial x} = f \\
+        &q = -k \frac{\partial T}{\partial x} 
+    \end{align*}
+    And we will consider the following situations:
+    \begin{enumerate}
+        \item Linear flux ($\frac{\partial q}{\partial x} = 1$) and constant thermal conductivity ($k=1$).
+        \item Linear flux and thermal conductivity not constant.
+        \item Flux non-linear ant thermal conductivity not constant.
+    \end{enumerate}
+
+    Meanwhile, in the 2-D case we will work with:
+    \begin{align*}
+        &\frac{\partial q}{\partial x} + \frac{\partial q}{\partial y}  = f \\
+        &\bm{q} = -k \left( \frac{\partial T}{\partial x} + \frac{\partial T}{\partial y}\right)
+    \end{align*}
+    But we will only consider a case where flux is linear ant the thermal conductivity is constant.
+    
+    \subsection*{Error bounds computations}
+    Our main goal is for an approximated solution $v$, check how good it is compared to the real solution $u$ but without knowing it. The idea is that instead of measuring $\norm*{u-v} = \norm*{e_v}$ (which is the more natural way of measuring the error between both solutions), we will try to give an upper bound (called majorant) of $\norm*{k^{\frac{1}{2}}\div e_v}$. By integrating the PDE and some more computations we obtain:
+    \begin{align*}
+        \norm*{k^{\frac{1}{2}}\div e:v} \leq \norm*{k^{-\frac{1}{2}}(\bm{r}+k\div v)} + C_{\Omega,k}\norm*{f-\div \bm{r}} \equiv \mathcal{M}(v,r;f)
+    \end{align*}
+    where $\bm{r}$ is an approximation to the flux function.
+    With this error bound, we will also consider the relative error:
+    \begin{align*}
+        \frac{\norm*{k^{\frac{1}{2}}\div e_v}}{\norm*{k^{\frac{1}{2}}\div v}} \leq \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div v}}
+    \end{align*}
+    Also, in order to determine the quality of the error bound we will compute (when we do know the real solution, of course) the efficiency index, that measures how close is the error bound to the true error. For the energy error of the potential we will have:
+    \begin{align*}
+        I_v = \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div e_v}}
+    \end{align*}
+    We know, that for the case of the majorant this index will be bigger or equal to 1: the closest to 1 we are, the better we are doing.\\
+    For the previous computations we have been considering the potential energy error $e_v$, but we could also consider the flux energy error $e_r$, and then compute the called 'combined error':
+    \begin{align*}
+        \norm*{(e_v,e_r)}_{*} \equiv \norm*{k^{\frac{1}{2}}\div e_v} + \norm*{k^{-\frac{1}{2}}e_r} + C_{\Omega,k}\norm*{\div e_r}
+    \end{align*} 
+    And indeed, we can prove with the previous concepts that 
+    \begin{align*}
+        \mathcal{M}(v,r;f) \leq  \norm*{(e_v,e_r)}_{*}  \leq 3\mathcal{M}(v,r;f)
+    \end{align*}
+
+    So these are the computations that we will check for our concrete cases. But first, let us talk about the method used to do the computations:
+    \subsection*{Implementation of the method}
+    In our concrete problem we will be working in the unit square (unit interval in the case of 1D): we will divide it in cells, with its correspondent surrounding edges (all cells and edges numbered following a concrete order). For each cell, we will approximate the potential ($v_h \approx u$), and the flux satisfies an integral form of conservation, so we can compute the flux ($r_h$) in every edge surrounding the cell using finite difference. Interpolating both flux and potential we can then obtain functions smooth enough to work with them and apply all the mentioned before.
+    This is done as showed in the picture: for inner cells it is a simple interpolation cause we have all potential and fluxes needed, but for borders it is more complicated. We will rely on the following results for borders that are not corners:
+
+    If we are considering the 1D case, following the conservation law for cell $i$ we have:
+    \begin{align*}
+        q_{i+1} - q_i =  \int_{w_i} f
+    \end{align*}
+
+    This can be applied the same way in the 2D case, component by component. For the particular case considered in our drawing we would have that the flux y the y-component is an interpolation between $F_T$ and $F_B$, while for the flux in the component x we need to compute $F_L$, and that is done following the previous said about the conservation law:
+    \begin{align*}
+        F_L &= F_R - \int\limits_{x_1}^{x_2} f(x,y) \,dx\ \\
+        &=  F_R - f(x,y)\Delta x \quad \text{(Cause we are considering f being constant)}
+    \end{align*}
+
+    The remaining cells are then the corners, and by simplification we have assumed a flux equal to zero in this regions.
+
+    \subsection*{Results in 1D}
+    Once we have explained the procedure, let us dive in the numerical results.
+
+    \subsection*{Results in 2D}
+
+    \subsection*{Conclusion}
+    \subsection*{References}
+\end{document}
