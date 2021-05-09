@@ -1,0 +1,28 @@
+Computations with values: nx = 16, ny = 16
+Majorant: 0.186621 
+Real_error 0.501687
+Energy_norm 4.414399
+Relative_error 0.000188
+Efficiency index (potential) 0.042276
+
+Computations with values: nx = 32, ny = 32
+Majorant: 0.183422 
+Real_error 0.501697
+Energy_norm 4.439229
+Relative_error 0.000043
+Efficiency index (potential) 0.041318
+
+Computations with values: nx = 64, ny = 64
+Majorant: 0.174172 
+Real_error 0.501699
+Energy_norm 4.444994
+Relative_error 0.000010
+Efficiency index (potential) 0.039184
+
+Computations with values: nx = 128, ny = 128
+Majorant: 0.111364 
+Real_error 0.501699
+Energy_norm 4.446383
+Relative_error 0.000002
+Efficiency index (potential) 0.025046
+

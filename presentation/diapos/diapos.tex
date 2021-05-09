@@ -42,15 +42,15 @@
     \frame{\titlepage}
     \begin{frame}
         \frametitle{Introduction}
-        Our main goal is to give accurate error bounds for approximated solutions of a PDE. In concrete, we will focus on the problem of thermal conduction, described by  \alert{Fourier's law}:
-    \begin{align*}
-        \bm{q} = -k \div T
-    \end{align*}
+        Our main goal is to give accurate error bounds for approximated solutions of a PDE. In concrete, we will focus on the problem of the steady-state heat equation, described by  \alert{Poison's equation}:
+        \begin{align*}
+            \bm{q} = -k \div ^2 u
+        \end{align*}
     where 
     \begin{enumerate}
-        \item[] $\bm{q}$ is the local heat flux density,
+        \item[] $\bm{q}$ is the heat flux of the source,
         \item[] $k$ is the materials' thermal conductivity,
-        \item[] $\div{T}$ is the temperature gradient.
+        \item[] $u$ is the temperature.
     \end{enumerate}
     With the previous PDE we will look at the flow rates or fluxes of energy locally. \\
 
@@ -67,7 +67,7 @@
             \textbf{1D CASE}
             \begin{align*}
                 &\frac{\partial q}{\partial x} = f \\
-                &q = -k \frac{\partial T}{\partial x} 
+                &q = -k \frac{\partial u}{\partial x} 
             \end{align*}
             And we will consider the following situations:
             \begin{itemize}
@@ -80,7 +80,7 @@
             \textbf{2D CASE} \\
             \begin{align*}
                 &\frac{\partial q}{\partial x} + \frac{\partial q}{\partial y}  = f \\
-                &\bm{q} = -k \left( \frac{\partial T}{\partial x} + \frac{\partial T}{\partial y}\right)
+                &\bm{q} = -k \left( \frac{\partial u}{\partial x} + \frac{\partial u}{\partial y}\right)
             \end{align*}
             But we will only consider a case where flux is linear ant the thermal conductivity is constant.
         \end{columns}        
@@ -107,7 +107,7 @@
 
     \begin{frame}
         \frametitle{Error bounds computations}
-        When we do know the the real solution, we will also compute the \alert{efficiency index}:
+        When we do know the the real solution, we will also compute the \alert{efficiency index} (for the potential):
         \begin{align*}
             I_v = \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div e_v}}
         \end{align*}

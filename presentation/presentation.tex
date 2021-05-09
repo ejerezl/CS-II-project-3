@@ -12,28 +12,29 @@
 
 
 \usepackage[margin=1.1in]{geometry}
-\title{Interaction between PDE and geometry}
+\title{Error bounds of an elliptic PDE}
 \date{}
 
 \setlength\parindent{0pt}
 \begin{document}
     \maketitle
     \subsection*{Introduction}
-    Our goal for this project is to give accurate error bounds for approximated solutions of a problem described by an elliptic PDE. In concrete, we will focus on the problem of thermal conduction, that is, the transfer of internal energy by microscopic collisions of particles and movement of electrons within a body. More in concrete, we will rely on the law of heat conduction, also known as Fourier's law.
+    Our goal for this project is to give accurate error bounds for approximated solutions of a problem described by an elliptic PDE. In this project we are working with the steady-state of the heat equation, which purpose is modeling how a quantity such as heat diffuses through a given region. The heat equation was first developed by Fourier studying how thermal conduction works, while the steady-state heat equation (not dependent on time, $\frac{\partial u}{\partial t} = 0$ ) of a volume that contains a heat source is described by Poisson's equation:
     \begin{align*}
-        \bm{q} = -k \div T
+        \bm{q} = -k \div ^2 u
     \end{align*}
     where 
     \begin{enumerate}
-        \item[] $\bm{q}$ is the local heat flux density (heat flux density is the amount of energy that flows through a unit area per unit time),
+        \item[] $\bm{q}$ is the heat flux of the source,
         \item[] $k$ is the materials' thermal conductivity,
-        \item[] $\div{T}$ is the temperature gradient.
+        \item[] $u$ is the temperature.
     \end{enumerate}
+
     In general terms, it states that the rate of heat transfer through a material is proportional to the negative gradient in the temperature and to the area through which the heat flows. With the previous PDE we will look at the flow rates or fluxes of energy locally. \\
-    Our work will be done in 1-D and 2-D for different concrete cases. In the 1D case, Fourier's law is of the following way:
+    Our work will be done in 1-D and 2-D for different concrete cases. In the 1D case, Poison's equation is of the following way:
     \begin{align*}
         &\frac{\partial q}{\partial x} = f \\
-        &q = -k \frac{\partial T}{\partial x} 
+        &q = -k \frac{\partial u}{\partial x} 
     \end{align*}
     And we will consider the following situations:
     \begin{enumerate}
@@ -45,7 +46,7 @@
     Meanwhile, in the 2-D case we will work with:
     \begin{align*}
         &\frac{\partial q}{\partial x} + \frac{\partial q}{\partial y}  = f \\
-        &\bm{q} = -k \left( \frac{\partial T}{\partial x} + \frac{\partial T}{\partial y}\right)
+        &\bm{q} = -k \left( \frac{\partial u}{\partial x} + \frac{\partial u}{\partial y}\right)
     \end{align*}
     But we will only consider a case where flux is linear ant the thermal conductivity is constant.
     
@@ -59,10 +60,11 @@
     \begin{align*}
         \frac{\norm*{k^{\frac{1}{2}}\div e_v}}{\norm*{k^{\frac{1}{2}}\div v}} \leq \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div v}}
     \end{align*}
-    Also, in order to determine the quality of the error bound we will compute (when we do know the real solution, of course) the efficiency index, that measures how close is the error bound to the true error. For the energy error of the potential we will have:
+    Also, in order to determine the quality of the error bound we will compute (when we do know the real solution, of course) the efficiency index (for the potential), that measures how close is the error bound to the true error. For the energy error of the potential we will have:
     \begin{align*}
         I_v = \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div e_v}}
     \end{align*}
+    Notice this efficiency index is in terms of the potential, but we can (and we will) also compute the efficiency index of the flux, or the combined efficiency index.
     We know, that for the case of the majorant this index will be bigger or equal to 1: the closest to 1 we are, the better we are doing.\\
     For the previous computations we have been considering the potential energy error $e_v$, but we could also consider the flux energy error $e_r$, and then compute the called 'combined error':
     \begin{align*}
@@ -75,7 +77,7 @@
 
     So these are the computations that we will check for our concrete cases. But first, let us talk about the method used to do the computations:
     \subsection*{Implementation of the method}
-    In our concrete problem we will be working in the unit square (unit interval in the case of 1D): we will divide it in cells, with its correspondent surrounding edges (all cells and edges numbered following a concrete order). For each cell, we will approximate the potential ($v_h \approx u$), and the flux satisfies an integral form of conservation, so we can compute the flux ($r_h$) in every edge surrounding the cell using finite difference. Interpolating both flux and potential we can then obtain functions smooth enough to work with them and apply all the mentioned before.
+    In our concrete problem we will be working in the unit square (unit interval in the case of 1D): we will divide it in cells, with its correspondent surrounding edges (all cells and edges numbered following a concrete order). For each cell, we will approximate the potential ($v_h \approx u$) by just evaluating the potential in the middle of the cell and assuming that is the potential in the whole cell. For the flux, we can compute an approximation ($r_h$) in every edge surrounding the cell using finite difference: $r_h^j = \pm k^j \frac{v_h^{i_1}- v_h^{i_2}}{\Delta x}$. Interpolating both flux and potential we can then obtain functions smooth enough to work with them and apply all the mentioned before.
     This is done as showed in the picture: for inner cells it is a simple interpolation cause we have all potential and fluxes needed, but for borders it is more complicated. We will rely on the following results for borders that are not corners:
 
     If we are considering the 1D case, following the conservation law for cell $i$ we have:
@@ -89,7 +91,19 @@
         &=  F_R - f(x,y)\Delta x \quad \text{(Cause we are considering f being constant)}
     \end{align*}
 
-    The remaining cells are then the corners, and by simplification we have assumed a flux equal to zero in this regions.
+    The remaining cells are then the corners. For that suppose our approximated flux looks like this:
+    \begin{align*}
+        r(x,y) = \begin{bmatrix}
+            b_1+b_2*x\\
+            b_3+b_4*y
+            \end{bmatrix}
+    \end{align*}
+    Then, following the PDE, it must be satisfied that:
+    \begin{align*}
+        r_x + r_y &= f \quad \text{\scriptsize{(Remember we were considering f constant)}}\\
+        b_2 + b_4 &= f \quad \text{\scriptsize{(First condition)}}
+    \end{align*}
+    On the other hand, we know that for inner edges, the flux is set to zero, so by that we are adding two more conditions. The one condition left for our 4 unknowns values is assuming $b_1 = b_3$. As we are approximating, we can totally assume this to make computations more easily. 
 
     \subsection*{Results in 1D}
     Once we have explained the procedure, let us dive in the numerical results.
