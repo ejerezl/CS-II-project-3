@@ -12,7 +12,7 @@ f = @(x,y) 8*pi*pi*sin(2*pi*x).*sin(2*pi*y).*k(x,y)-(2*pi*cos(2*x*pi).*sin(2*pi*
 %f = @(x,y) 1;
 
 %Determine number of cells in each direction
-ny = 17;
+ny = nx;
 dx = 1/(nx-1);
 dy = 1/(ny-1);
 

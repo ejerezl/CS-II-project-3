@@ -86,10 +86,10 @@ end
 loglog(grid_refinery, convergence_error)
 title('Convergence Plot');
 hold on
-y=grid_refinery;
+y=grid_refinery.^(2);
 loglog(grid_refinery,y)
 hold off
-legend({'numerical scheme','10^1'}, 'Location','northwest')
+legend({'numerical scheme','10^{2}'}, 'Location','northwest')
 xlabel('gridsize')
 ylabel('error')
 xlim([0 0.07])
