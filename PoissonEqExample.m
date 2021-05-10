@@ -74,6 +74,30 @@ ef_index_potential = majorant/energy_norm;
 % colorbar()
 
 
+<<<<<<< HEAD
+
+%Convergence rate
+convergence_error = zeros(4,1);
+grid_refinery = zeros(4,1);
+for i=1:4
+    [conv_rate, grid_size] = convergence(nx);
+    err1 = [conv_rate, grid_size];
+    convergence_error(i) = err1(1);
+    grid_refinery(i) = err1(2);
+    nx = 2*nx;
+end
+
+loglog(grid_refinery, convergence_error)
+title('Convergence Plot');
+hold on
+y=grid_refinery.^(2);
+loglog(grid_refinery,y)
+hold off
+legend({'numerical scheme','10^{2}'}, 'Location','northwest')
+xlabel('gridsize')
+ylabel('error')
+xlim([0 0.07])
+=======
 % %Convergence rate
 % convergence_error = zeros(4,1);
 % grid_refinery = zeros(4,1);
@@ -95,3 +119,4 @@ ef_index_potential = majorant/energy_norm;
 % xlabel('gridsize')
 % ylabel('error')
 % xlim([0 0.07])
+>>>>>>> a6a6cf891cf9e44873cf83cc01a0c5d0a137ba7c

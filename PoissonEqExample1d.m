@@ -3,12 +3,12 @@
 
 %%%%% Choose set of initial data %%%%%
 
-% k1 = @(x) 2 - x;
-% u_fabricated = @(x) sin(2*pi*x);
-% q_fabricated = @(x) -2*pi*cos(2*pi*x).*(2-x);
-% f = @(x) 4*pi*pi*sin(2*pi*x).*k1(x) + 2*pi*cos(2*pi*x);
-% k_const = false;
-% f_const = false;
+k1 = @(x) 2 - x;
+u_fabricated = @(x) sin(2*pi*x);
+q_fabricated = @(x) -2*pi*cos(2*pi*x).*(2-x);
+f = @(x) 4*pi*pi*sin(2*pi*x).*k1(x) + 2*pi*cos(2*pi*x);
+k_const = false;
+f_const = false;
 
 % k1 = @(x) 1;
 % u_fabricated = @(x) sin(2*pi*x);
@@ -17,12 +17,12 @@
 % k_const = true;
 % f_const = false;
 
-k1 = @(x) 1;
-u_fabricated = @(x) -0.5*x.^2 + 0.5*x;
-q_fabricated = @(x) x - 0.5;
-f = @(x) 1;
-k_const = true;
-f_const = true;
+% k1 = @(x) 1;
+% u_fabricated = @(x) -0.5*x.^2 + 0.5*x;
+% q_fabricated = @(x) x - 0.5;
+% f = @(x) 1;
+% k_const = true;
+% f_const = true;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -135,7 +135,13 @@ elseif k_const
     c = 1/pi; %Poincare constant for k=1
     %Energy error
     [err_true,err_calc, err_cons, err_v, err_pot] = energy_error_norm2(u, q, nx, edges, k1);
- 
+    
+    %Runge Kutta estimate type 1
+    %2nd entry: Order of convergence, 3rd entry: ratio between h1 and h2
+    [err1, err2] = rktype1_2(nx, 1, 8); 
+    fprintf('True error: %d.\n', err1);
+    fprintf('Runge-Kutta estimate: %d.\n', err2);
+    
     %Convergence rate
     convergence_error = zeros(4,1);
     grid_refinery = zeros(4,1);
@@ -172,7 +178,13 @@ elseif k_const
 else
     c=1/sqrt(14.3249); %14.3249 is smallest eigenvalue of A which is not 1
     [err_true, err_calc, err_cons, err_v, err_pot] = energy_error_norm3(u, q, nx, edges, k1);
-
+    
+    %Runge Kutta estimate type 1
+    %2nd entry: Order of convergence, 3rd entry: ratio between h1 and h2
+    [err1, err2] = rktype1_3(nx, 1.1, 8); 
+    fprintf('True error: %d.\n', err1);
+    fprintf('Runge-Kutta estimate: %d.\n', err2);
+    
     %Convergence rate
     convergence_error = zeros(4,1);
     grid_refinery = zeros(4,1);

@@ -2,7 +2,7 @@
 
 %a = convergence rate
 
-function [err1, err2] = rktype1(nx, a, k)
+function [err1, err2] = rktype1_2(nx, a, k)
 % Poisson equation: -Div(k(x,y)Grad(u)) = f
 
 %Diffusivity
@@ -11,8 +11,8 @@ k_const = true;
 
 
 %RHS function
-f = @(x) 1;
-f_const = true;
+f = @(x) 4*pi*pi*sin(2*pi*x).*k1(x);
+f_const = false;
 
 %%% u_h1, h1 = dx %%%
 %Determine number of cells
@@ -38,7 +38,7 @@ grid1 = zeros(nx1+1,1);
 grid1(2:(nx1)) = edges(:,1,1);
 grid1(end) = 1;
 
-[err_true,err_calc, err_v] = energy_error_norm1(u1, q, nx1, edges, k1);
+[err_true,err_calc, err_v, err_pot] = energy_error_norm2(u1, q, nx1, edges, k1);
 err1 = err_true;
 
 %%% u_h2, h2 = k*h1 %%%
@@ -96,41 +96,6 @@ for i=1:nx
         err2 = err2 + ki*err;
     end
 end
-
-% %left boundary
-% i=1;
-% a1_1 = (pot1(i+1)-pot1(i))/(dx/2);
-% for j=2:k
-%     a1_2 = (pot2((i-1)*k + j + 1) - pot2((i-1)*k + j))/(dx2/2);
-%     %ki = (k(grid2(i)))^(-1);
-%     ki = 1;
-%     err = (a1_1 + a1_2)^2*(dx2/2);
-%     err2 = err2 + ki*err;
-% end
-% j = 1;
-% a1_2 = (pot2((i-1)*k + j + 1) - pot2((i-1)*k + j))/(dx2/2);
-% %ki = (k(grid2(i)))^(-1);
-% ki = 1;
-% err = (a1_1 + a1_2)^2*(dx2/2);
-% err2 = err2 + ki*err;
-% 
-% %right boundary
-% i=nx;
-% a1_1 = (pot1(i+1)-pot1(i))/(dx/2);
-% for j=1:k-1
-%     a1_2 = (pot2((i-1)*k + j + 1) - pot2((i-1)*k + j))/(dx2/2);
-%     %ki = (k(grid2(i)))^(-1);
-%     ki = 1;
-%     err = (a1_1 + a1_2)^2*(dx2/2);
-%     err2 = err2 + ki*err;
-% end
-% j = k;
-% a1_2 = (pot2((i-1)*k + j + 1) - pot2((i-1)*k + j))/(dx2/2);
-% %ki = (k(grid2(i)))^(-1);
-% ki = 1;
-% err = (a1_1 + a1_2)^2*(dx2/2);
-% err2 = err2 + ki*err;
-
 
 err2 = sqrt(err2);
 
