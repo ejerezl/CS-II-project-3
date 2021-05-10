@@ -2,17 +2,17 @@
 
 %Diffusivity
 %k = @(x,y) 1+(x-1).*(y-1);
-k = @(x,y) 1;
+k = @(x,y) 5;
 % Exact solution
 u_fabricated = @(x,y) sin(2*pi*x).*sin(2*pi*y);
 
 %RHS function
 %f = @(x,y) 8*pi*pi*sin(2*pi*x).*sin(2*pi*y).*k(x,y)-(2*pi*cos(2*x*pi).*sin(2*pi*y).*(y-1)+2*pi*sin(2*pi*x).*cos(2*pi*y).*(x-1));
-f = @(x,y) 1;
+f = @(x,y) 3;
 
 %Determine number of cells in each direction
-nx = 30;
-ny = 30;
+nx = 50;
+ny = 50;
 dx = 1/(nx-1);
 dy = 1/(ny-1);
 
@@ -45,7 +45,7 @@ error = norm(u-u_fabricated_vect,2)*sqrt(dx*dy)
 % colorbar()
 
 % Compute error without knowing real solution
-[energy_error, conservation_integral, energy_error_flux] = energyError(U,-(K.*G)*u, 1, dx, dy, cells, nx, ny, 1)
+[energy_error, conservation_integral, energy_error_flux] = energyError(U,-(K.*G)*u, 5, dx, dy, cells, nx, ny, 3)
 majorant = energy_error + (1/(sqrt(k(0))*pi))*conservation_integral
 energy_norm = norm((k(0)^(1/2))*G*(u-u_fabricated_vect),2)*sqrt(dx*dy)
 relative_error = energy_error/norm((k(0)^(1/2))*G*u_fabricated_vect,2)*sqrt(dx*dy)
