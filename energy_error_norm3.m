@@ -4,7 +4,7 @@
 %err_v = error of approx. v, |k^1/2 * dx v|
 %err_pot = true error of flux,|k^^-1/2 * (q-r)|
 
-function [err_true, err_calc, err_cons, err_v, err_pot] = energy_error_norm3(u, q, num_cells,edges, k)
+function [err_true, err_calc, err_cons, err_v, err_flux] = energy_error_norm3(u, q, num_cells,edges, k)
 
 %define new grid of edges which includes 0 and 1
 grid = zeros(num_cells+1,1);
@@ -76,7 +76,7 @@ err_v = sqrt(err_v);
 
 
 %Calculate true error of potential
-err_pot = 0;
+err_flux = 0;
 
 for i=1:num_cells
     b0 = q(i,1);
@@ -86,8 +86,8 @@ for i=1:num_cells
     err1 = 2*b1*(b1*c-2*b1-b0)*x+2*b1*sin(2*pi*(x-2))*(x-2)+(-4*pi*sin(4*pi*(x-2))*(x-2)-4*b1^2*(x-2)^2-cos(4*pi*(x-2)))/8-pi^2*(x-2)^2-2*(b1*c-2*b1-b0)*sin(2*pi*(x-2))+(b1*cos(2*pi*(x-2)))/pi-(b1*c-2*b1-b0)^2*log(abs(x-2));
     x = grid(i);
     err2 = -(2*b1*(b1*c-2*b1-b0)*x+2*b1*sin(2*pi*(x-2))*(x-2)+(-4*pi*sin(4*pi*(x-2))*(x-2)-4*b1^2*(x-2)^2-cos(4*pi*(x-2)))/8-pi^2*(x-2)^2-2*(b1*c-2*b1-b0)*sin(2*pi*(x-2))+(b1*cos(2*pi*(x-2)))/pi-(b1*c-2*b1-b0)^2*log(abs(x-2)));
-    err_pot = err_pot + err1 +err2;
+    err_flux = err_flux + err1 +err2;
 end
-err_pot = sqrt(err_pot);
+err_flux = sqrt(err_flux);
 
 

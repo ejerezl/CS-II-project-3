@@ -4,7 +4,7 @@
 %err_v = error of approx. v, |k^1/2 * dx v|
 %err_pot = true error of flux,|k^^-1/2 * (q-r)|
 
-function [err_true, err_calc, err_v, err_pot] = energy_error_norm1(u, q, num_cells,edges, k)
+function [err_true, err_calc, err_cons, err_v, err_flux] = energy_error_norm1(u, q, num_cells,edges, k)
 
 %define new grid of edges which includes 0 and 1
 grid = zeros(num_cells+1,1);
@@ -54,6 +54,32 @@ end
 err_calc = sqrt(err_calc);
 
 
+%Calculate error of potential
+err_flux = 0;
+
+for i=1:num_cells
+    b0 = q(i,1);
+    b1 = (q(i+1,1)-q(i,1))/(grid(i+1)-grid(i));
+    if b1 == 1 
+        err1 = (grid(i)-b0-0.5)^2*grid(i+1);
+        err2 = -(grid(i)-b0-0.5)^2*grid(i);
+    else
+    err1 = -(-b1*(grid(i+1)-grid(i))+grid(i+1)-b0-0.5)^3/(3*(b1-1));
+    err2 = (grid(i)-b0-0.5)^3/(3*(b1-1));
+    end
+    err_flux = err_flux + err1 + err2;
+end
+
+err_flux = sqrt(err_flux);
+
+err_cons = 0;
+for i=1:num_cells
+    b1 = (q(i+1,1)-q(i,1))/(grid(i+1)-grid(i));
+    err_cons = err_cons + (1-b1)^2*(grid(i+1)-grid(i));
+end
+err_cons = sqrt(err_cons);
+    
+
 % Energy error integral of v
 err_v = 0;
 for i=1:num_cells
@@ -62,26 +88,6 @@ for i=1:num_cells
     err_v = err_v + err1;
 end
 err_v = sqrt(err_v);
-
-%Calculate error of potential
-err_pot = 0;
-
-for i=1:num_cells
-    b0 = q(i,1);
-    b1 = (q(i+1,1)-q(i,1))/(grid(i+1)-grid(i));
-    if b1 == 1 
-        err1 = 0;
-        err2 = 0;
-    else
-    err1 = -(-b1*(grid(i+1)-grid(i))+grid(i+1)-b0-0.5)^3/(3*(b1-1));
-    err2 = (grid(i)-b0-0.5)^3/(3*(b1-1));
-    end
-    err_pot = err_pot + err1 + err2;
-end
-
-err_pot = sqrt(err_pot);
-    
-
 
 
 
