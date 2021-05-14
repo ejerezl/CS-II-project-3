@@ -3,12 +3,14 @@
 % U = matrix with potentials
 % F = flux
 % k = from PDE (considering it a constant)
-function [energy_error, conservation_integral, energy_error_flux] = energyError(U, F, k, dx, dy, cells, cells_x, cells_y, f)
+function [energy_error, conservation_integral, energy_error_flux, energy_norm, v_norm, energy_q_norm] = energyError(U, F, k, dx, dy, cells, cells_x, cells_y, f, u_1, u_2)
 
 energy_error = 0;
 conservation_integral = 0;
 energy_error_flux = 0;
-
+energy_norm = 0;
+v_norm = 0;
+energy_q_norm = 0;
 %For computing the aproximation of the error we need to compute two
 %integrals
 
@@ -38,12 +40,7 @@ for j=2:cells_y-1
         y2=cells(cell,2)+dy/2;
         
         [a2, a3, a4, b1, b2, b3, b4] = interpolation(1,cells(cell,:),F,dx,dy,A,B,C,D,x1,y1);
-%         % this error correspond to the integral in that cell of r*r
-%         error1=(b1^2+b3^2)*dx*dy+b1*b2*(x2^2-x1^2)*dy+b3*b4*dx*(y2^2-y1^2)+(b2^2*(x2^3-x1^3)*dy+b4^2*dx*(y2^3-y1^3))/3;
-%         % This error correspond to the integral in that cell of delta v * delta v
-%         error2=(a2^2+a3^2)*dx*dy+a2*a4*dx*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*dy+a4^2*((x2^3-x1^3)*dy+dx*(y2^3-y1^3))/3;
-%         % This error correspond to the integral in that cell of r * delta v
-%         error3=(b1*a2+b3*a3)*dx*dy+(x2^2-x1^2)*dy*(b2*a2+b3*a4)/2+dx*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
+ 
         
         % this error correspond to the integral in that cell of r*r
         fun = @(x,y) ((b1+b2*x).^2+(b3+b4*y).^2)./k(x,y);
@@ -54,6 +51,7 @@ for j=2:cells_y-1
         % This error correspond to the integral in that cell of r * delta v
         fun = @(x,y) k(x,y).*((a2+a4*y).^2+(a3+a4*x).^2);
         error3=integral2(fun,x1,x2,y1,y2);
+        v_norm = v_norm + error3;
         
         % Add error at each cell plus the previously computed
         energy_error=energy_error+error1+error2+error3;
@@ -61,9 +59,21 @@ for j=2:cells_y-1
         %Computing the conservation integral
         fun = @(x,y) (f(x,y)-b2-b4).^2 +x -x +y -y;
         conservation_integral = conservation_integral + integral2(fun,x1,x2,y1,y2);
-
+        q_norm = @(x,y) k(x,y).*fun(x,y);
+        energy_q_norm = energy_q_norm + integral2(q_norm, x1,x2,y1,y2);
+        
         %Computing energy error of the flux er
-        %energy_error_flux = energy_error_flux + k*error2 + (1/k)*error1 + 2*error3;
+        fun = @(x,y) k(x,y).*((u_1(x,y)).^2 + (u_2(x,y)).^2);
+        error2_f = integral2(fun,x1,x2,y1,y2);
+        fun = @(x,y) 2*(u_1(x,y).*(b1+b2*x)+u_2(x,y).*(b3+b4*y));
+        error3_f = integral2(fun,x1,x2,y1,y2);
+        energy_error_flux = energy_error_flux + error1 + error2_f + error3_f;
+        
+        %Computing energy norm
+        fun = @(x,y) 2*k(x,y).*(u_1(x,y).*(a2+a4*y)+u_2(x,y).*(a3+a4*x));
+        error_norm = integral2(fun,x1,x2,y1,y2);
+        energy_norm = energy_norm + error2_f - error_norm + error3;
+        
     end
 end
 
@@ -91,14 +101,7 @@ for i = 2:cells_x-1
     b2 = (Fr-Fl)/(x2-x1);
     b3 = Fb + y1*(Fb-Ft)/(y2-y1);
     b4 = (Ft-Fb)/(y2-y1);
-    
-%     % this error correspond to the integral in that cell of r*r
-%     error1=(b1^2+b3^2)*dx*(dy/2)+b1*b2*(x2^2-x1^2)*(dy/2)+b3*b4*dx*(y2^2-y1^2)+(b2^2*(x2^3-x1^3)*(dy/2)+b4^2*dx*(y2^3-y1^3))/3;
-%     % This error correspond to the integral in that cell of delta v * delta v
-%     error2=(a2^2+a3^2)*dx*(dy/2)+a2*a4*dx*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*(dy/2)+a4^2*((x2^3-x1^3)*(dy/2)+dx*(y2^3-y1^3))/3;
-%     % This error correspond to the integral in that cell of r * delta v
-%     error3=(b1*a2+b3*a3)*dx*(dy/2)+(x2^2-x1^2)*(dy/2)*(b2*a2+b3*a4)/2+dx*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
-
+ 
     % this error correspond to the integral in that cell of r*r
     fun = @(x,y) ((b1+b2*x).^2+(b3+b4*y).^2)./k(x,y);
     error1=integral2(fun,x1,x2,y1,y2);
@@ -108,16 +111,28 @@ for i = 2:cells_x-1
     % This error correspond to the integral in that cell of r * delta v
     fun = @(x,y) k(x,y).*((a2+a4*y).^2+(a3+a4*x).^2);
     error3=integral2(fun,x1,x2,y1,y2);
-        
+    v_norm = v_norm + error3;
+    
     % Add error at each cell plus the previously computed
     energy_error=energy_error+error1+error2+error3;
         
     %Computing the conservation integral
     fun = @(x,y) (f(x,y)-b2-b4).^2 +x -x +y -y;
     conservation_integral = conservation_integral + integral2(fun,x1,x2,y1,y2);
+    q_norm = @(x,y) k(x,y).*fun(x,y);
+    energy_q_norm = energy_q_norm + integral2(q_norm, x1,x2,y1,y2);
     
     %Computing energy error of the flux er
-    %energy_error_flux = energy_error_flux + k*error2 + (1/k)*error1 + 2*error3;
+    fun = @(x,y) k(x,y).*((u_1(x,y)).^2 + (u_2(x,y)).^2);
+    error2_f = integral2(fun,x1,x2,y1,y2);
+    fun = @(x,y) 2*(u_1(x,y).*(b1+b2*x)+u_2(x,y).*(b3+b4*y));
+    error3_f = integral2(fun,x1,x2,y1,y2);
+    energy_error_flux = energy_error_flux + error1 + error2_f + error3_f;
+
+    %Computing energy norm
+    fun = @(x,y) 2*k(x,y).*(u_1(x,y).*(a2+a4*y)+u_2(x,y).*(a3+a4*x));
+    error_norm = integral2(fun,x1,x2,y1,y2);
+    energy_norm = energy_norm + error2_f - error_norm + error3;
 end
 
 % Right cells (Except corners)
@@ -146,14 +161,7 @@ for j = 2:cells_y - 1
     b3 = Fb + y1*(Fb-Ft)/(y2-y1);
     b4 = (Ft-Fb)/(y2-y1);
     
-%     % this error correspond to the integral in that cell of r*r
-%     error1=(b1^2+b3^2)*(dx/2)*dy+b1*b2*(x2^2-x1^2)*dy+b3*b4*(dx/2)*(y2^2-y1^2)+(b2^2*(x2^3-x1^3)*dy+b4^2*(dx/2)*(y2^3-y1^3))/3;
-%     % This error correspond to the integral in that cell of delta v * delta v
-%     error2=(a2^2+a3^2)*(dx/2)*dy+a2*a4*(dx/2)*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*dy+a4^2*((x2^3-x1^3)*dy+(dx/2)*(y2^3-y1^3))/3;
-%     % This error correspond to the integral in that cell of r * delta v
-%     error3=(b1*a2+b3*a3)*(dx/2)*dy+(x2^2-x1^2)*dy*(b2*a2+b3*a4)/2+(dx/2)*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
-    
-       % this error correspond to the integral in that cell of r*r
+    % this error correspond to the integral in that cell of r*r
     fun = @(x,y) ((b1+b2*x).^2+(b3+b4*y).^2)./k(x,y);
     error1=integral2(fun,x1,x2,y1,y2);
     % This error correspond to the integral in that cell of delta v * delta v
@@ -162,16 +170,28 @@ for j = 2:cells_y - 1
     % This error correspond to the integral in that cell of r * delta v
     fun = @(x,y) k(x,y).*((a2+a4*y).^2+(a3+a4*x).^2);
     error3=integral2(fun,x1,x2,y1,y2);
-        
+    v_norm = v_norm + error3;
+    
     % Add error at each cell plus the previously computed
     energy_error=energy_error+error1+error2+error3;
         
     %Computing the conservation integral
     fun = @(x,y) (f(x,y)-b2-b4).^2 +x -x +y -y;
     conservation_integral = conservation_integral + integral2(fun,x1,x2,y1,y2);
+    q_norm = @(x,y) k(x,y).*fun(x,y);
+    energy_q_norm = energy_q_norm + integral2(q_norm, x1,x2,y1,y2);
     
     %Computing energy error of the flux er
-    %energy_error_flux = energy_error_flux + k*error2 + (1/k)*error1 + 2*error3;
+    fun = @(x,y) k(x,y).*((u_1(x,y)).^2 + (u_2(x,y)).^2);
+    error2_f = integral2(fun,x1,x2,y1,y2);
+    fun = @(x,y) 2*(u_1(x,y).*(b1+b2*x)+u_2(x,y).*(b3+b4*y));
+    error3_f = integral2(fun,x1,x2,y1,y2);
+    energy_error_flux = energy_error_flux + error1 + error2_f + error3_f;
+
+    %Computing energy norm
+    fun = @(x,y) 2*k(x,y).*(u_1(x,y).*(a2+a4*y)+u_2(x,y).*(a3+a4*x));
+    error_norm = integral2(fun,x1,x2,y1,y2);
+    energy_norm = energy_norm + error2_f - error_norm + error3;
 end
 
 %Top cells (Except corners)
@@ -199,15 +219,8 @@ for i = 2:cells_x-1
     b2 = (Fr-Fl)/(x2-x1);
     b3 = Fb + y1*(Fb-Ft)/(y2-y1);
     b4 = (Ft-Fb)/(y2-y1);
-    
-%     % this error correspond to the integral in that cell of r*r
-%     error1=(b1^2+b3^2)*dx*(dy/2)+b1*b2*(x2^2-x1^2)*(dy/2)+b3*b4*dx*(y2^2-y1^2)+(b2^2*(x2^3-x1^3)*(dy/2)+b4^2*dx*(y2^3-y1^3))/3;
-%     % This error correspond to the integral in that cell of delta v * delta v
-%     error2=(a2^2+a3^2)*dx*(dy/2)+a2*a4*dx*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*(dy/2)+a4^2*((x2^3-x1^3)*(dy/2)+dx*(y2^3-y1^3))/3;
-%     % This error correspond to the integral in that cell of r * delta v
-%     error3=(b1*a2+b3*a3)*dx*(dy/2)+(x2^2-x1^2)*(dy/2)*(b2*a2+b3*a4)/2+dx*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
 
-        % this error correspond to the integral in that cell of r*r
+    % this error correspond to the integral in that cell of r*r
     fun = @(x,y) ((b1+b2*x).^2+(b3+b4*y).^2)./k(x,y);
     error1=integral2(fun,x1,x2,y1,y2);
     % This error correspond to the integral in that cell of delta v * delta v
@@ -216,16 +229,28 @@ for i = 2:cells_x-1
     % This error correspond to the integral in that cell of r * delta v
     fun = @(x,y) k(x,y).*((a2+a4*y).^2+(a3+a4*x).^2);
     error3=integral2(fun,x1,x2,y1,y2);
-        
+    v_norm = v_norm + error3;
+    
     % Add error at each cell plus the previously computed
     energy_error=energy_error+error1+error2+error3;
         
     %Computing the conservation integral
     fun = @(x,y) (f(x,y)-b2-b4).^2 +x -x +y -y;
     conservation_integral = conservation_integral + integral2(fun,x1,x2,y1,y2);
+    q_norm = @(x,y) k(x,y).*fun(x,y);
+    energy_q_norm = energy_q_norm + integral2(q_norm, x1,x2,y1,y2);
     
     %Computing energy error of the flux er
-    %energy_error_flux = energy_error_flux + k*error2 + (1/k)*error1 + 2*error3;
+    fun = @(x,y) k(x,y).*((u_1(x,y)).^2 + (u_2(x,y)).^2);
+    error2_f = integral2(fun,x1,x2,y1,y2);
+    fun = @(x,y) 2*(u_1(x,y).*(b1+b2*x)+u_2(x,y).*(b3+b4*y));
+    error3_f = integral2(fun,x1,x2,y1,y2);
+    energy_error_flux = energy_error_flux + error1 + error2_f + error3_f;
+
+    %Computing energy norm
+    fun = @(x,y) 2*k(x,y).*(u_1(x,y).*(a2+a4*y)+u_2(x,y).*(a3+a4*x));
+    error_norm = integral2(fun,x1,x2,y1,y2);
+    energy_norm = energy_norm + error2_f - error_norm + error3;
 end
 
 %Left cells (Except corners)
@@ -254,15 +279,8 @@ for j = 2:cells_y - 1
     b2 = (Fr-Fl)/(x2-x1);
     b3 = Fb + y1*(Fb-Ft)/(y2-y1);
     b4 = (Ft-Fb)/(y2-y1);
-    
-%     % this error correspond to the integral in that cell of r*r
-%     error1=(b1^2+b3^2)*(dx/2)*dy+b1*b2*(x2^2-x1^2)*dy+b3*b4*(dx/2)*(y2^2-y1^2)+(b2^2*(x2^3-x1^3)*dy+b4^2*(dx/2)*(y2^3-y1^3))/3;
-%     % This error correspond to the integral in that cell of delta v * delta v
-%     error2=(a2^2+a3^2)*(dx/2)*dy+a2*a4*(dx/2)*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*dy+a4^2*((x2^3-x1^3)*dy+(dx/2)*(y2^3-y1^3))/3;
-%     % This error correspond to the integral in that cell of r * delta v
-%     error3=(b1*a2+b3*a3)*(dx/2)*dy+(x2^2-x1^2)*dy*(b2*a2+b3*a4)/2+(dx/2)*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
 
-        % this error correspond to the integral in that cell of r*r
+    % this error correspond to the integral in that cell of r*r
     fun = @(x,y) ((b1+b2*x).^2+(b3+b4*y).^2)./k(x,y);
     error1=integral2(fun,x1,x2,y1,y2);
     % This error correspond to the integral in that cell of delta v * delta v
@@ -271,16 +289,28 @@ for j = 2:cells_y - 1
     % This error correspond to the integral in that cell of r * delta v
     fun = @(x,y) k(x,y).*((a2+a4*y).^2+(a3+a4*x).^2);
     error3=integral2(fun,x1,x2,y1,y2);
-        
+    v_norm = v_norm + error3;
+    
     % Add error at each cell plus the previously computed
     energy_error=energy_error+error1+error2+error3;
         
     %Computing the conservation integral
     fun = @(x,y) (f(x,y)-b2-b4).^2 +x -x +y -y;
     conservation_integral = conservation_integral + integral2(fun,x1,x2,y1,y2);
+    q_norm = @(x,y) k(x,y).*fun(x,y);
+    energy_q_norm = energy_q_norm + integral2(q_norm, x1,x2,y1,y2);
     
     %Computing energy error of the flux er
-    %energy_error_flux = energy_error_flux + k*error2 + (1/k)*error1 + 2*error3;
+    fun = @(x,y) k(x,y).*((u_1(x,y)).^2 + (u_2(x,y)).^2);
+    error2_f = integral2(fun,x1,x2,y1,y2);
+    fun = @(x,y) 2*(u_1(x,y).*(b1+b2*x)+u_2(x,y).*(b3+b4*y));
+    error3_f = integral2(fun,x1,x2,y1,y2);
+    energy_error_flux = energy_error_flux + error1 + error2_f + error3_f;
+
+    %Computing energy norm
+    fun = @(x,y) 2*k(x,y).*(u_1(x,y).*(a2+a4*y)+u_2(x,y).*(a3+a4*x));
+    error_norm = integral2(fun,x1,x2,y1,y2);
+    energy_norm = energy_norm + error2_f - error_norm + error3;
 end
 
 %Corners
@@ -306,13 +336,6 @@ b2 = f(x1,y1) -b4;
 b3 = -y2*b4;
 b1 = b3;
 
-% % this error correspond to the integral in that cell of r*r
-% error1=(b1^2+b3^2)*(dx/2)*(dy/2)+b1*b2*(x2^2-x1^2)*(dy/2)+b3*b4*(dx/2)*(y2^2-y1^2)+(b2^2*(x2^3-x1^3)*(dy/2)+b4^2*(dx/2)*(y2^3-y1^3))/3;
-% % This error correspond to the integral in that cell of delta v * delta v
-% error2=(a2^2+a3^2)*(dx/2)*(dy/2)+a2*a4*(dx/2)*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*(dy/2)+a4^2*((x2^3-x1^3)*(dy/2)+(dx/2)*(y2^3-y1^3))/3;
-% % This error correspond to the integral in that cell of r * delta v
-% error3=(b1*a2+b3*a3)*(dx/2)*(dy/2)+(x2^2-x1^2)*(dy/2)*(b2*a2+b3*a4)/2+(dx/2)*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
-
 % this error correspond to the integral in that cell of r*r
 fun = @(x,y) ((b1+b2*x).^2+(b3+b4*y).^2)./k(x,y);
 error1=integral2(fun,x1,x2,y1,y2);
@@ -322,19 +345,28 @@ error2=integral2(fun,x1,x2,y1,y2);
 % This error correspond to the integral in that cell of r * delta v
 fun = @(x,y) k(x,y).*((a2+a4*y).^2+(a3+a4*x).^2);
 error3=integral2(fun,x1,x2,y1,y2);
-        
+v_norm = v_norm + error3;
+
 % Add error at each cell plus the previously computed
 energy_error=energy_error+error1+error2+error3;
         
 %Computing the conservation integral
 fun = @(x,y) (f(x,y)-b2-b4).^2 +x -x +y -y;
 conservation_integral = conservation_integral + integral2(fun,x1,x2,y1,y2);
+q_norm = @(x,y) k(x,y).*fun(x,y);
+energy_q_norm = energy_q_norm + integral2(q_norm, x1,x2,y1,y2);
 
-% conservation_integral = conservation_integral +
-% (f-b2-b4)^2*(x2-x1)*(y2-y1); this will be zero cause one condition is f =
-% b2+b4
 %Computing energy error of the flux er
-%energy_error_flux = energy_error_flux + k*error2 + (1/k)*error1 + 2*error3;
+fun = @(x,y) k(x,y).*((u_1(x,y)).^2 + (u_2(x,y)).^2);
+error2_f = integral2(fun,x1,x2,y1,y2);
+fun = @(x,y) 2*(u_1(x,y).*(b1+b2*x)+u_2(x,y).*(b3+b4*y));
+error3_f = integral2(fun,x1,x2,y1,y2);
+energy_error_flux = energy_error_flux + error1 + error2_f + error3_f;
+
+%Computing energy norm
+fun = @(x,y) 2*k(x,y).*(u_1(x,y).*(a2+a4*y)+u_2(x,y).*(a3+a4*x));
+error_norm = integral2(fun,x1,x2,y1,y2);
+energy_norm = energy_norm + error2_f - error_norm + error3;
 
 %right bottom corner
 i = cells_x;
@@ -359,13 +391,6 @@ b2 = f(x1,y1) -b4;
 b3 = -y2*b4;
 b1 = b3;
 
-% % this error correspond to the integral in that cell of r*r
-% error1=(b1^2+b3^2)*(dx/2)*(dy/2)+b1*b2*(x2^2-x1^2)*(dy/2)+b3*b4*(dx/2)*(y2^2-y1^2)+(b2^2*(x2^3-x1^3)*(dy/2)+b4^2*(dx/2)*(y2^3-y1^3))/3;
-% % This error correspond to the integral in that cell of delta v * delta v
-% error2=(a2^2+a3^2)*(dx/2)*(dy/2)+a2*a4*(dx/2)*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*(dy/2)+a4^2*((x2^3-x1^3)*(dy/2)+(dx/2)*(y2^3-y1^3))/3;
-% % This error correspond to the integral in that cell of r * delta v
-% error3=(b1*a2+b3*a3)*(dx/2)*(dy/2)+(x2^2-x1^2)*(dy/2)*(b2*a2+b3*a4)/2+(dx/2)*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
-
 % this error correspond to the integral in that cell of r*r
 fun = @(x,y) ((b1+b2*x).^2+(b3+b4*y).^2)./k(x,y);
 error1=integral2(fun,x1,x2,y1,y2);
@@ -375,19 +400,28 @@ error2=integral2(fun,x1,x2,y1,y2);
 % This error correspond to the integral in that cell of r * delta v
 fun = @(x,y) k(x,y).*((a2+a4*y).^2+(a3+a4*x).^2);
 error3=integral2(fun,x1,x2,y1,y2);
-        
+v_norm = v_norm + error3;
+
 % Add error at each cell plus the previously computed
 energy_error=energy_error+error1+error2+error3;
         
 %Computing the conservation integral
 fun = @(x,y) (f(x,y)-b2-b4).^2 +x -x +y -y;
 conservation_integral = conservation_integral + integral2(fun,x1,x2,y1,y2);
+q_norm = @(x,y) k(x,y).*fun(x,y);
+energy_q_norm = energy_q_norm + integral2(q_norm, x1,x2,y1,y2);
 
-% conservation_integral = conservation_integral +
-% (f-b2-b4)^2*(x2-x1)*(y2-y1); this will be zero cause one condition is f =
-% b2+b4
 %Computing energy error of the flux er
-%energy_error_flux = energy_error_flux + k*error2 + (1/k)*error1 + 2*error3;
+fun = @(x,y) k(x,y).*((u_1(x,y)).^2 + (u_2(x,y)).^2);
+error2_f = integral2(fun,x1,x2,y1,y2);
+fun = @(x,y) 2*(u_1(x,y).*(b1+b2*x)+u_2(x,y).*(b3+b4*y));
+error3_f = integral2(fun,x1,x2,y1,y2);
+energy_error_flux = energy_error_flux + error1 + error2_f + error3_f;
+
+%Computing energy norm
+fun = @(x,y) 2*k(x,y).*(u_1(x,y).*(a2+a4*y)+u_2(x,y).*(a3+a4*x));
+error_norm = integral2(fun,x1,x2,y1,y2);
+energy_norm = energy_norm + error2_f - error_norm + error3;
 
 %Left upper corner
 i = 1;
@@ -412,13 +446,6 @@ b2 = f(x1,y1) -b4;
 b3 = -y1*b4;
 b1 = b3;
 
-% % this error correspond to the integral in that cell of r*r
-% error1=(b1^2+b3^2)*(dx/2)*(dy/2)+b1*b2*(x2^2-x1^2)*(dy/2)+b3*b4*(dx/2)*(y2^2-y1^2)+(b2^2*(x2^3-x1^3)*(dy/2)+b4^2*(dx/2)*(y2^3-y1^3))/3;
-% % This error correspond to the integral in that cell of delta v * delta v
-% error2=(a2^2+a3^2)*(dx/2)*(dy/2)+a2*a4*(dx/2)*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*(dy/2)+a4^2*((x2^3-x1^3)*(dy/2)+(dx/2)*(y2^3-y1^3))/3;
-% % This error correspond to the integral in that cell of r * delta v
-% error3=(b1*a2+b3*a3)*(dx/2)*(dy/2)+(x2^2-x1^2)*(dy/2)*(b2*a2+b3*a4)/2+(dx/2)*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
-
 % this error correspond to the integral in that cell of r*r
 fun = @(x,y) ((b1+b2*x).^2+(b3+b4*y).^2)./k(x,y);
 error1=integral2(fun,x1,x2,y1,y2);
@@ -428,21 +455,28 @@ error2=integral2(fun,x1,x2,y1,y2);
 % This error correspond to the integral in that cell of r * delta v
 fun = @(x,y) k(x,y).*((a2+a4*y).^2+(a3+a4*x).^2);
 error3=integral2(fun,x1,x2,y1,y2);
-        
+v_norm = v_norm + error3;
+
 % Add error at each cell plus the previously computed
 energy_error=energy_error+error1+error2+error3;
         
 %Computing the conservation integral
 fun = @(x,y) (f(x,y)-b2-b4).^2 +x -x +y -y;
 conservation_integral = conservation_integral + integral2(fun,x1,x2,y1,y2);
+q_norm = @(x,y) k(x,y).*fun(x,y);
+energy_q_norm = energy_q_norm + integral2(q_norm, x1,x2,y1,y2);
 
 %Computing energy error of the flux er
-%energy_error_flux = energy_error_flux + k*error2 + (1/k)*error1 + 2*error3;
+fun = @(x,y) k(x,y).*((u_1(x,y)).^2 + (u_2(x,y)).^2);
+error2_f = integral2(fun,x1,x2,y1,y2);
+fun = @(x,y) 2*(u_1(x,y).*(b1+b2*x)+u_2(x,y).*(b3+b4*y));
+error3_f = integral2(fun,x1,x2,y1,y2);
+energy_error_flux = energy_error_flux + error1 + error2_f + error3_f;
 
-%Computing the conservation integral when f = 1
-% conservation_integral = conservation_integral +
-% (f-b2-b4)^2*(x2-x1)*(y2-y1); this will be zero cause one condition is f =
-% b2+b4
+%Computing energy norm
+fun = @(x,y) 2*k(x,y).*(u_1(x,y).*(a2+a4*y)+u_2(x,y).*(a3+a4*x));
+error_norm = integral2(fun,x1,x2,y1,y2);
+energy_norm = energy_norm + error2_f - error_norm + error3;
 
 
 %Right upper corner
@@ -468,13 +502,6 @@ b2 = f(x1,y1) -b4;
 b3 = -y1*b4;
 b1 = b3;
 
-% % this error correspond to the integral in that cell of r*r
-% error1=(b1^2+b3^2)*(dx/2)*(dy/2)+b1*b2*(x2^2-x1^2)*(dy/2)+b3*b4*(dx/2)*(y2^2-y1^2)+(b2^2*(x2^3-x1^3)*(dy/2)+b4^2*(dx/2)*(y2^3-y1^3))/3;
-% % This error correspond to the integral in that cell of delta v * delta v
-% error2=(a2^2+a3^2)*(dx/2)*(dy/2)+a2*a4*(dx/2)*(y2^2-y1^2)+a3*a4*(x2^2-x1^2)*(dy/2)+a4^2*((x2^3-x1^3)*(dy/2)+(dx/2)*(y2^3-y1^3))/3;
-% % This error correspond to the integral in that cell of r * delta v
-% error3=(b1*a2+b3*a3)*(dx/2)*(dy/2)+(x2^2-x1^2)*(dy/2)*(b2*a2+b3*a4)/2+(dx/2)*(y2^2-y1^2)*(b1*a4+b4*a3)/2+(x2^2-x1^2)*(y2^2-y1^2)*(a4*b2+a4*b4)/4;
-
 % this error correspond to the integral in that cell of r*r
 fun = @(x,y) ((b1+b2*x).^2+(b3+b4*y).^2)./k(x,y);
 error1=integral2(fun,x1,x2,y1,y2);
@@ -484,23 +511,37 @@ error2=integral2(fun,x1,x2,y1,y2);
 % This error correspond to the integral in that cell of r * delta v
 fun = @(x,y) k(x,y).*((a2+a4*y).^2+(a3+a4*x).^2);
 error3=integral2(fun,x1,x2,y1,y2);
-        
+v_norm = v_norm + error3;
+
 % Add error at each cell plus the previously computed
 energy_error=energy_error+error1+error2+error3;
         
 %Computing the conservation integral
 fun = @(x,y) (f(x,y)-b2-b4).^2 +x -x +y -y;
 conservation_integral = conservation_integral + integral2(fun,x1,x2,y1,y2);
-
-% conservation_integral = conservation_integral +
-% (f-b2-b4)^2*(x2-x1)*(y2-y1); this will be zero cause one condition is f =
-% b2+b4
+q_norm = @(x,y) k(x,y).*fun(x,y);
+energy_q_norm = energy_q_norm + integral2(q_norm, x1,x2,y1,y2);
 
 %Computing energy error of the flux er
-%energy_error_flux = energy_error_flux + k*error2 + (1/k)*error1 + 2*error3;
+fun = @(x,y) k(x,y).*((u_1(x,y)).^2 + (u_2(x,y)).^2);
+error2_f = integral2(fun,x1,x2,y1,y2);
+fun = @(x,y) 2*(u_1(x,y).*(b1+b2*x)+u_2(x,y).*(b3+b4*y));
+error3_f = integral2(fun,x1,x2,y1,y2);
+energy_error_flux = energy_error_flux + error1 + error2_f + error3_f;
 
+%Computing energy norm
+fun = @(x,y) 2*k(x,y).*(u_1(x,y).*(a2+a4*y)+u_2(x,y).*(a3+a4*x));
+error_norm = integral2(fun,x1,x2,y1,y2);
+energy_norm = energy_norm + error2_f - error_norm + error3;
+
+%-------------- END OF COMPUTATIONS IN CELLS
+
+%Final computations
 conservation_integral = sqrt(conservation_integral);
 energy_error = sqrt(energy_error);
-%energy_error_flux = sqrt(energy_error_flux);
+energy_error_flux = sqrt(energy_error_flux);
+energy_norm = sqrt(energy_norm);
+v_norm = sqrt(v_norm);
+energy_q_norm = sqrt(energy_q_norm);
 
 end

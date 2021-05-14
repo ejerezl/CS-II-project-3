@@ -4,6 +4,7 @@
 function [a2,a3,a4,b1,b2,b3,b4] = interpolation(flag, cell, F, dx, dy, A, B, C, D,x,y)
     if flag == 0
         %In this case only compute the interpolation of the potential
+        %a1 = x*y*(A-B-C+D)/(dx*dy) - y*(-A+C)/dy - x*(B-A)/dx + A;
         a2 = (B-A+y*(B-A-D+C)/dy)/dx;
         a3 = (C-A+x*(C-D-A+B)/dx)/dy;
         a4 = (D-C-B+A)/(dx*dy);
@@ -13,6 +14,7 @@ function [a2,a3,a4,b1,b2,b3,b4] = interpolation(flag, cell, F, dx, dy, A, B, C, 
         b4 = 0;
         return
     end
+    %a1 = x*y*(A-B-C+D)/(dx*dy) - y*(-A+C)/dy - x*(B-A)/dx + A;
     a2 = (B-A+y*(B-A-D+C)/dy)/dx;
     a3 = (C-A+x*(C-D-A+B)/dx)/dy;
     a4 = (D-C-B+A)/(dx*dy);

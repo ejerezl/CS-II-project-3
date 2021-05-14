@@ -12,7 +12,6 @@
 \usepackage{mathtools}
 \usepackage{mathrsfs}
 \usepackage{physics}
-\usepackage{enumitem}
 \usepackage{bm}
 \usepackage{bbm}
 
@@ -82,7 +81,7 @@
                 &\frac{\partial q}{\partial x} + \frac{\partial q}{\partial y}  = f \\
                 &\bm{q} = -k \left( \frac{\partial u}{\partial x} + \frac{\partial u}{\partial y}\right)
             \end{align*}
-            But we will only consider a case where flux is linear ant the thermal conductivity is constant.
+            Here we will consider a final problem where both $f$ and $k$ are more complex function, but we do know the real solution.
         \end{columns}        
     \end{frame}
 
@@ -152,19 +151,36 @@
     
     \end{frame}
 
-    \begin{frame}
+    \begin{frame}[c]
         \frametitle{Results in 2D}
+        \begin{table}[c]
+              \begin{tabular}{c | c | c | c | c | c } 
+                $\zeta$ & $\mathcal{M}$  & $\norm*{k^{\frac{1}{2}}\div e_v}$ & $\norm*{(e_v,e_r)}_{*}$ & $I_v^{eff}$ & $I_{v,r}^{eff}$ \\
+                \hline \hline
+                $\zeta_1$ (4) & 2.61 & 6.36e-1 & 2.99 & 4.10 & 2.62 \\ 
+                $\zeta_2$ & 1.25 & 2.95e-1 & 1.43 & 4.26 & 2.63 \\
+                $\zeta_3$ & 6.19e-1 & 1.43e-1& 7.03e-1 & 4.31 & 2.64 \\
+                $\zeta_4$ & 3.07e-1 & 7.10e-2 & 3.48e-1 & 4.32 & 2.64 \\
+              \end{tabular}
+              \caption{2D - computations}
+          \end{table}
     
     \end{frame}
 
     \begin{frame}
-        \frametitle{Conclusion}
-    
+
+    \frametitle{Conclusion}
+        We have done computations for problems where we do know the real solution, to conclude I would like to consider a case where we do not know this real solution. Would our bound be good? We obviously can check that with the relative error, but nevertheless, it would measure how close it is to the approximated solution, not to the real solution. That's the reason why we use the efficiency index. With this last computation we have both a majorant and minorant of the efficiency index, the problem is that we need the real solution for computing the efficiency index. The conclusion then is that the ideal case would be if we have both a majorant and minorant of the quantity we are trying to measure. This way we could know how wide is our range of values for that quantity. If that range is small, we know that both minorant and majorant are giving a good bound. But in the case it is very large, we can not really tell anything about the data. (Example of our domain with our bound).
     \end{frame}
 
     \begin{frame}
-        \frametitle{References}
-    
+    \frametitle{References}
+        \begin{enumerate}
+            \item All notes from INF264
+            \item Code from Erlend 
+            \item wikipedia
+        \end{enumerate}
     \end{frame}
+
 \end{document}
     

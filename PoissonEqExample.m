@@ -73,9 +73,6 @@ ef_index_potential = majorant/energy_norm;
 % title('u_{fabricated}')
 % colorbar()
 
-
-<<<<<<< HEAD
-
 %Convergence rate
 convergence_error = zeros(4,1);
 grid_refinery = zeros(4,1);
@@ -97,7 +94,7 @@ legend({'numerical scheme','10^{2}'}, 'Location','northwest')
 xlabel('gridsize')
 ylabel('error')
 xlim([0 0.07])
-=======
+
 % %Convergence rate
 % convergence_error = zeros(4,1);
 % grid_refinery = zeros(4,1);
@@ -119,4 +116,3 @@ xlim([0 0.07])
 % xlabel('gridsize')
 % ylabel('error')
 % xlim([0 0.07])
->>>>>>> a6a6cf891cf9e44873cf83cc01a0c5d0a137ba7c
