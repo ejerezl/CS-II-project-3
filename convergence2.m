@@ -1,6 +1,6 @@
 %%%%% Convergence of 1d method for f=4*pi*pi*sin(2*pi*x) and k=1 %%%%%
 
-function [err_conv, grid_size, err_calc, err_cons, err_pot, err_v] = convergence2(nx)
+function [err_conv, grid_size, err_calc, err_cons, err_v, err_flux] = convergence2(nx)
 
 % Poisson equation: -Div(k(x,y)Grad(u)) = f
 
@@ -32,7 +32,7 @@ for i=2:nx
 end
 q = flux1d(k1,u,dx,nx, k_const, f_const);
 
-[err_true, err_calc, err_cons, err_v, err_pot] = energy_error_norm2(u, q, nx, edges, k1);
+[err_true, err_calc, err_cons, err_v, err_flux] = energy_error_norm2(u, q, nx, edges, k1);
 
 err_conv = err_true;
 grid_size = dx;

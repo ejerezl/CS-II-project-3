@@ -14,173 +14,204 @@
 \usepackage{physics}
 \usepackage{bm}
 \usepackage{bbm}
+\usepackage[export]{adjustbox}
 
-\title{Interaction between PDE and geometry}
+\title{Error bounds for numerical approximations}
 \author[MAT264] 
 {Kaja Jurak, Esther Jerez}
 
 \institute[UIB]
 {
-  Faculty of Mathematics\\
-  University of Bergen
-  
+	Faculty of Mathematics\\
+	University of Bergen
+	
 }
 \date[2021]
 {May 2021}
 
 
 \logo{
-    \begin{tikzpicture}
-        \node[inner sep=0pt] (logo) at (0,0)
-            {\includegraphics[width=.25\textwidth]{uiblogo.png}};
-\end{tikzpicture}}
+	\begin{tikzpicture}
+	\node[inner sep=0pt] (logo) at (0,0)
+	{\includegraphics[width=.25\textwidth]{uiblogo.png}};
+	\end{tikzpicture}}
 
 
 \setlength\parindent{0pt}
 \begin{document}
-    \frame{\titlepage}
-    \begin{frame}
-        \frametitle{Introduction}
-        Our main goal is to give accurate error bounds for approximated solutions of a PDE. In concrete, we will focus on the problem of the steady-state heat equation, described by  \alert{Poison's equation}:
-        \begin{align*}
-            \bm{q} = -k \div ^2 u
-        \end{align*}
-    where 
-    \begin{enumerate}
-        \item[] $\bm{q}$ is the heat flux of the source,
-        \item[] $k$ is the materials' thermal conductivity,
-        \item[] $u$ is the temperature.
-    \end{enumerate}
-    With the previous PDE we will look at the flow rates or fluxes of energy locally. \\
+	\frame{\titlepage}
+	\begin{frame}
+	\frametitle{Introduction}
+	Our main goal is to give accurate error bounds for approximated solutions of a PDE. In concrete, we will focus on the problem of the steady-state heat equation, described by  \alert{Poisson's equation}:
+	\begin{align*}
+	\bm{q} = -k \div ^2 u
+	\end{align*}
+	where 
+	\begin{enumerate}
+		\item[] $\bm{q}$ is the heat flux of the source,
+		\item[] $k$ is the materials' thermal conductivity,
+		\item[] $u$ is the temperature.
+	\end{enumerate}
+	With the previous PDE we will look at the flow rates or fluxes of energy locally. \\
+	
+	% \begin{block}{Remark}
+	%     Sample text
+	% \end{block}
+	
+\end{frame}
 
-        % \begin{block}{Remark}
-        %     Sample text
-        % \end{block}
-    
-    \end{frame}
+\begin{frame}
+\frametitle{Introduction}
+\begin{columns}[t]
+	\column{0.5\textwidth}
+	\textbf{1D CASE}
+	\begin{align*}
+	&\frac{\partial q}{\partial x} = f \\
+	&q = -k \frac{\partial u}{\partial x} 
+	\end{align*}
+	And we will consider the following situations:
+	\begin{itemize}
+		\item[1.] Linear flux ($\frac{\partial q}{\partial x} = 1$) and constant thermal conductivity ($k=1$).
+		\item[2.] Linear flux and thermal conductivity not constant.
+		\item[3.] Flux non-linear ant thermal conductivity not constant.
+	\end{itemize}
+	
+	\column{0.5\textwidth}
+	\textbf{2D CASE} \\
+	\begin{align*}
+	\frac{\partial q_1}{\partial x} + \frac{\partial q_2}{\partial y}  &= f \\
+	\bm{q} = (q_1,\; q_2)^T  &= -k \left( \frac{\partial T}{\partial x} ,\; \frac{\partial T}{\partial y}\right)^T
+	\end{align*}
+	Here we will consider a final problem where both $f$ and $k$ are more complex function, but we do know the real solution.
+\end{columns}        
+\end{frame}
 
-    \begin{frame}
-        \frametitle{Introduction}
-        \begin{columns}[t]
-            \column{0.5\textwidth}
-            \textbf{1D CASE}
-            \begin{align*}
-                &\frac{\partial q}{\partial x} = f \\
-                &q = -k \frac{\partial u}{\partial x} 
-            \end{align*}
-            And we will consider the following situations:
-            \begin{itemize}
-                \item[1.] Linear flux ($\frac{\partial q}{\partial x} = 1$) and constant thermal conductivity ($k=1$).
-                \item[2.] Linear flux and thermal conductivity not constant.
-                \item[3.] Flux non-linear ant thermal conductivity not constant.
-            \end{itemize}
-            
-            \column{0.5\textwidth}
-            \textbf{2D CASE} \\
-            \begin{align*}
-                &\frac{\partial q}{\partial x} + \frac{\partial q}{\partial y}  = f \\
-                &\bm{q} = -k \left( \frac{\partial u}{\partial x} + \frac{\partial u}{\partial y}\right)
-            \end{align*}
-            Here we will consider a final problem where both $f$ and $k$ are more complex function, but we do know the real solution.
-        \end{columns}        
-    \end{frame}
+\begin{frame}
+\frametitle{Error bounds computations}
+We are considering a general elliptic PDE:
+\begin{align*}
+\div q = f , \quad q =-k \div u
+\end{align*}
+Main idea: instead of measuring $\norm*{u-v} = \norm*{e_v}$, study $\norm*{k^{\frac{1}{2}}\div e_v}$. 
+\\ By integrating the PDE and some more computations we obtain:
+\begin{align*}
+\norm*{k^{\frac{1}{2}}\div e:v} \leq \norm*{k^{-\frac{1}{2}}(\bm{r}+k\div v)} + C_{\Omega,k}\norm*{f-\div \bm{r}} \equiv \mathcal{M}(v,r;f)
+\end{align*}
+where $\bm{r}$ is an approximation to the flux function.
+With this error bound, we will also consider the \alert{relative error}:
+\begin{align*}
+\frac{\norm*{k^{\frac{1}{2}}\div e_v}}{\norm*{k^{\frac{1}{2}}\div v}} \leq \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div v}}
+\end{align*}
 
-    \begin{frame}
-        \frametitle{Error bounds computations}
-        We are considering a general elliptic PDE:
-        \begin{align*}
-            \div q = f , \quad q =-k \div u
-        \end{align*}
-        Main idea: instead of measuring $\norm*{u-v} = \norm*{e_v}$, study $\norm*{k^{\frac{1}{2}}\div e_v}$. 
-        \\ By integrating the PDE and some more computations we obtain:
-        \begin{align*}
-            \norm*{k^{\frac{1}{2}}\div e:v} \leq \norm*{k^{-\frac{1}{2}}(\bm{r}+k\div v)} + C_{\Omega,k}\norm*{f-\div \bm{r}} \equiv \mathcal{M}(v,r;f)
-        \end{align*}
-        where $\bm{r}$ is an approximation to the flux function.
-        With this error bound, we will also consider the \alert{relative error}:
-        \begin{align*}
-            \frac{\norm*{k^{\frac{1}{2}}\div e_v}}{\norm*{k^{\frac{1}{2}}\div v}} \leq \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div v}}
-        \end{align*}
-        
-    \end{frame}
+\end{frame}
 
-    \begin{frame}
-        \frametitle{Error bounds computations}
-        When we do know the the real solution, we will also compute the \alert{efficiency index} (for the potential):
-        \begin{align*}
-            I_v = \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div e_v}}
-        \end{align*}
-        Combine the energy errors of both the potential and the flux:
-        \begin{align*}
-            \norm*{(e_v,e_r)}_{*} \equiv \norm*{k^{\frac{1}{2}}\div e_v} + \norm*{k^{-\frac{1}{2}}e_r} + C_{\Omega,k}\norm*{\div e_r}
-        \end{align*} 
-        And indeed, we can prove with the previous concepts that 
-        \begin{align*}
-            \mathcal{M}(v,r;f) \leq  \norm*{(e_v,e_r)}_{*}  \leq 3\mathcal{M}(v,r;f)
-        \end{align*}
-    \end{frame}
+\begin{frame}
+\frametitle{Error bounds computations}
+When we do know the the real solution, we will also compute the \alert{efficiency index} (for the potential):
+\begin{align*}
+I_v = \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div e_v}}
+\end{align*}
+Combine the energy errors of both the potential and the flux:
+\begin{align*}
+\norm*{(e_v,e_r)}_{*} \equiv \norm*{k^{\frac{1}{2}}\div e_v} + \norm*{k^{-\frac{1}{2}}e_r} + C_{\Omega,k}\norm*{\div e_r}
+\end{align*} 
+And indeed, we can prove with the previous concepts that 
+\begin{align*}
+\mathcal{M}(v,r;f) \leq  \norm*{(e_v,e_r)}_{*}  \leq 3\mathcal{M}(v,r;f)
+\end{align*}
+respectively
+\begin{align*}
+1 \leq I_v^\ast = \frac{3\mathcal{M}(v,r;f) }{\norm*{(e_v,e_r)}_{*}} \leq 3
+\end{align*}
+\end{frame}
 
-    \begin{frame}
-        \frametitle{Implementation of the method}
-        \begin{multicols}{2}[\columnsep2em] 
-                \includegraphics[width=\linewidth]{square.jpg}
-                \columnbreak
-                
-                For each cell, we will approximate the potential ($v_h \approx u$), and the flux satisfies an integral form of conservation, so we can compute the flux ($r_h$) in every edge surrounding the cell using finite difference. Interpolating both flux and potential we can then obtain functions smooth enough to work with them. 
-            \end{multicols}
-                
-    \end{frame}
+\begin{frame}
+\frametitle{Implementation of the method}
+\begin{multicols}{2}[\columnsep2em] 
+\includegraphics[width=\linewidth]{square.jpg}
+\columnbreak
 
-    \begin{frame}
-        \frametitle{Implementation of the method}
-        
-        If we are considering the 1D case, following the conservation law for cell $i$ we have:
-        \begin{align*}
-            q_{i+1} - q_i =  \int_{w_i} f
-        \end{align*}
+For each cell, we will approximate the potential ($v_h \approx u$), and the flux satisfies an integral form of conservation, so we can compute the flux ($r_h$) in every edge surrounding the cell using finite difference. Interpolating both flux and potential we can then obtain functions smooth enough to work with them. 
+\end{multicols}
 
-        This can be applied the same way in the 2D case, component by component. For the particular case of a left side cell we would compute the flux on the left edge by:
-        \begin{align*}
-            F_L &= F_R - \int\limits_{x_1}^{x_2} f(x,y) \,dx\ \\
-            &=  F_R - f(x,y)\Delta x \quad \text{\scriptsize{(Cause we are considering f being constant)}}
-        \end{align*}
-    \end{frame}
+\end{frame}
 
-    \begin{frame}
-        \frametitle{Results in 1D}
-    
-    \end{frame}
+\begin{frame}
+\frametitle{Implementation of the method}
 
-    \begin{frame}[c]
-        \frametitle{Results in 2D}
-        \begin{table}[c]
-              \begin{tabular}{c | c | c | c | c | c } 
-                $\zeta$ & $\mathcal{M}$  & $\norm*{k^{\frac{1}{2}}\div e_v}$ & $\norm*{(e_v,e_r)}_{*}$ & $I_v^{eff}$ & $I_{v,r}^{eff}$ \\
-                \hline \hline
-                $\zeta_1$ (4) & 2.61 & 6.36e-1 & 2.99 & 4.10 & 2.62 \\ 
-                $\zeta_2$ & 1.25 & 2.95e-1 & 1.43 & 4.26 & 2.63 \\
-                $\zeta_3$ & 6.19e-1 & 1.43e-1& 7.03e-1 & 4.31 & 2.64 \\
-                $\zeta_4$ & 3.07e-1 & 7.10e-2 & 3.48e-1 & 4.32 & 2.64 \\
-              \end{tabular}
-              \caption{2D - computations}
-          \end{table}
-    
-    \end{frame}
+If we are considering the 1D case, following the conservation law for cell $i$ we have:
+\begin{align*}
+q_{i+1} - q_i =  \int_{w_i} f
+\end{align*}
 
-    \begin{frame}
+This can be applied the same way in the 2D case, component by component. For the particular case of a left side cell we would compute the flux on the left edge by:
+\begin{align*}
+F_L &= F_R - \int\limits_{x_1}^{x_2} f(x,y) \,dx\ \\
+&=  F_R - f(x,y)\Delta x \quad \text{\scriptsize{(Cause we are considering f being constant)}}
+\end{align*}
+\end{frame}
 
-    \frametitle{Conclusion}
-        We have done computations for problems where we do know the real solution, to conclude I would like to consider a case where we do not know this real solution. Would our bound be good? We obviously can check that with the relative error, but nevertheless, it would measure how close it is to the approximated solution, not to the real solution. That's the reason why we use the efficiency index. With this last computation we have both a majorant and minorant of the efficiency index, the problem is that we need the real solution for computing the efficiency index. The conclusion then is that the ideal case would be if we have both a majorant and minorant of the quantity we are trying to measure. This way we could know how wide is our range of values for that quantity. If that range is small, we know that both minorant and majorant are giving a good bound. But in the case it is very large, we can not really tell anything about the data. (Example of our domain with our bound).
-    \end{frame}
+\begin{frame}
+\frametitle{Results in 1D }
+%\begin{minipage}{0.8\textwidth}
+\vspace{-18pt}
+\begin{figure}[t]
+%\centering
+\includegraphics[width = 0.7\linewidth]{convergenceplot_k_f_constant.png}
+\caption{Poisson equation in 1d with diffusity $k(x) = 1$ and heat source $f(x) = 1$.}
+\label{fig:Convergence1d1}
+\end{figure}
+\end{frame}
 
-    \begin{frame}
-    \frametitle{References}
-        \begin{enumerate}
-            \item All notes from INF264
-            \item Code from Erlend 
-            \item wikipedia
-        \end{enumerate}
-    \end{frame}
+\begin{frame}{Result 1D}
+\begin{figure}
+\centering
+\includegraphics[width = 1.05\linewidth, left]{difference_analytical_numerical.png}
+\caption{Absolute difference between analytical and numerical solution of Poisson equation with $k(x) = 2-x$ and $f(x) = 4\pi^2\sin(2\pi x)\cdot k(x) + 2\pi\cos(2\pi x)$.}
+\label{fig:fig:diff}
+\end{figure}
+\end{frame}
 
+\begin{frame}
+\frametitle{Results in 1D }
+%\begin{minipage}{0.8\textwidth}
+\vspace{-18pt}
+\begin{figure}[t]
+\centering
+\includegraphics[width = 0.7\linewidth]{convergenceplot_k_f_non_constant.png}
+\caption{Poisson equation in 1d with diffusity $k(x) = 2-x$ and heat source $f(x) = 4\pi^2\sin(2\pi x)\cdot k(x) + 2\pi\cos(2\pi x)$.}
+\label{fig:Convergence1d}
+\end{figure}
+
+% \end{minipage}
+\end{frame}
+
+\begin{frame}[c]
+    \frametitle{Results in 2D}
+    \begin{table}[c]
+          \begin{tabular}{c | c | c | c | c | c } 
+            $\zeta$ & $\mathcal{M}$  & $\norm*{k^{\frac{1}{2}}\div e_v}$ & $\norm*{(e_v,e_r)}_{*}$ & $I_v^{eff}$ & $I_{v,r}^{eff}$ \\
+            \hline \hline
+            $\zeta_1$ (4) & 2.61 & 6.36e-1 & 2.99 & 4.10 & 2.62 \\ 
+            $\zeta_2$ & 1.25 & 2.95e-1 & 1.43 & 4.26 & 2.63 \\
+            $\zeta_3$ & 6.19e-1 & 1.43e-1& 7.03e-1 & 4.31 & 2.64 \\
+            $\zeta_4$ & 3.07e-1 & 7.10e-2 & 3.48e-1 & 4.32 & 2.64 \\
+          \end{tabular}
+          \caption{2D - computations}
+      \end{table}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Conclusion}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{References}
+\begin{enumerate}
+\item[I] Lecture Notes Mat264: Computational Science II, Univisersitet i Bergen, Jan Nordbotten, Spring Semester 2021
+\item[II] Matlab files from Erlend
+\end{enumerate}
+\end{frame}
 \end{document}
-    

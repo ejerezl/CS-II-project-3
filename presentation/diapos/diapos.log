@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.13)  14 MAY 2021 20:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.3.13)  14 MAY 2021 21:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -710,25 +710,68 @@ LaTeX Font Info:    Overwriting math alphabet `\mathbbm' in version `bold'
 (Font)                  U/bbm/m/n --> U/bbm/bx/n on input line 33.
 LaTeX Font Info:    Overwriting math alphabet `\mathbbmss' in version `bold'
 (Font)                  U/bbmss/m/n --> U/bbmss/bx/n on input line 35.
-) (/home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/diapos.aux)
+) (/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjustbox.sty
+Package: adjustbox 2019/01/04 v1.2 Adjusting TeX boxes (trim, clip, ...)
+ (/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
+ (/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+\XKV@toks=\toks47
+\XKV@tempa@toks=\toks48
+)
+\XKV@depth=\count342
+File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
+)) (/usr/share/texlive/texmf-dist/tex/latex/adjustbox/adjcalc.sty
+Package: adjcalc 2012/05/16 v1.1 Provides advanced setlength with multiple back-ends (calc, etex, pgfmath)
+) (/usr/share/texlive/texmf-dist/tex/latex/adjustbox/trimclip.sty
+Package: trimclip 2018/04/08 v1.1 Trim and clip general TeX material
+ (/usr/share/texlive/texmf-dist/tex/latex/collectbox/collectbox.sty
+Package: collectbox 2012/05/17 v0.4b Collect macro arguments as boxes
+\collectedbox=\box133
+)
+\tc@llx=\dimen308
+\tc@lly=\dimen309
+\tc@urx=\dimen310
+\tc@ury=\dimen311
+Package trimclip Info: Using driver 'tc-pdftex.def'.
+ (/usr/share/texlive/texmf-dist/tex/latex/adjustbox/tc-pdftex.def
+File: tc-pdftex.def 2019/01/04 v2.2 Clipping driver for pdftex
+))
+\adjbox@Width=\dimen312
+\adjbox@Height=\dimen313
+\adjbox@Depth=\dimen314
+\adjbox@Totalheight=\dimen315
+\adjbox@pwidth=\dimen316
+\adjbox@pheight=\dimen317
+\adjbox@pdepth=\dimen318
+\adjbox@ptotalheight=\dimen319
+ (/usr/share/texlive/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
+Package: ifoddpage 2016/04/23 v1.1 Conditionals for odd/even page detection
+\c@checkoddpage=\count343
+) (/usr/share/texlive/texmf-dist/tex/latex/varwidth/varwidth.sty
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box134
+\sift@deathcycles=\count344
+\@vwid@loff=\dimen320
+\@vwid@roff=\dimen321
+)) (/home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/diapos.aux)
 \openout1 = `diapos.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 40.
-LaTeX Font Info:    ... okay on input line 40.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 41.
+LaTeX Font Info:    ... okay on input line 41.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -766,25 +809,25 @@ LaTeX Font Info:    ... okay on input line 40.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count342
-\scratchdimen=\dimen308
-\scratchbox=\box133
-\nofMPsegments=\count343
-\nofMParguments=\count344
-\everyMPshowfont=\toks47
-\MPscratchCnt=\count345
-\MPscratchDim=\dimen309
-\MPnumerator=\count346
-\makeMPintoPDFobject=\count347
-\everyMPtoPDFconversion=\toks48
+\scratchcounter=\count345
+\scratchdimen=\dimen322
+\scratchbox=\box135
+\nofMPsegments=\count346
+\nofMParguments=\count347
+\everyMPshowfont=\toks49
+\MPscratchCnt=\count348
+\MPscratchDim=\dimen323
+\MPnumerator=\count349
+\makeMPintoPDFobject=\count350
+\everyMPtoPDFconversion=\toks50
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 )) ABD: EveryShipout initializing macros
-\AtBeginShipoutBox=\box134
-Package hyperref Info: Link coloring OFF on input line 40.
+\AtBeginShipoutBox=\box136
+Package hyperref Info: Link coloring OFF on input line 41.
  (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
  (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty
@@ -792,64 +835,64 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count348
+\c@section@level=\count351
 )
-LaTeX Info: Redefining \ref on input line 40.
-LaTeX Info: Redefining \pageref on input line 40.
-LaTeX Info: Redefining \nameref on input line 40.
+LaTeX Info: Redefining \ref on input line 41.
+LaTeX Info: Redefining \pageref on input line 41.
+LaTeX Info: Redefining \nameref on input line 41.
  (/home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/diapos.out) (/home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/diapos.out)
 \@outlinefile=\write7
 \openout7 = `diapos.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 40.
+(Font)                  OT1/cmr/m/n --> OT1/cmss/m/n on input line 41.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 40.
+(Font)                  OT1/cmr/bx/n --> OT1/cmss/b/n on input line 41.
 \symnumbers=\mathgroup12
-LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 40.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 41.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
-(Font)                  OT1/mathkerncmss/m/sl --> OT1/cmss/m/it on input line 40.
+(Font)                  OT1/mathkerncmss/m/sl --> OT1/cmss/m/it on input line 41.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  OT1/mathkerncmss/bx/sl --> OT1/cmss/m/it on input line 40.
+(Font)                  OT1/mathkerncmss/bx/sl --> OT1/cmss/m/it on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 40.
-LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 40.
-LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 40.
+(Font)                  OT1/cmss/m/n --> OT1/cmr/m/n on input line 41.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 41.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 40.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/m/n on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 40.
-LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 40.
+(Font)                  OT1/cmss/bx/n --> OT1/cmss/m/n on input line 41.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 40.
+(Font)                  OT1/cmr/m/it --> OT1/cmss/m/it on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 40.
-LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 40.
+(Font)                  OT1/cmr/bx/it --> OT1/cmss/m/it on input line 41.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 40.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 40.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/m/n on input line 41.
 LaTeX Font Info:    Overwriting symbol font `numbers' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 40.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 41.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 40.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathrm' in version `bold'
-(Font)                  OT1/cmss/b/n --> OT1/cmr/b/n on input line 40.
+(Font)                  OT1/cmss/b/n --> OT1/cmr/b/n on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
-(Font)                  OT1/cmss/b/n --> OT1/cmss/b/n on input line 40.
+(Font)                  OT1/cmss/b/n --> OT1/cmss/b/n on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 40.
+(Font)                  OT1/cmss/m/n --> OT1/cmss/b/n on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 40.
+(Font)                  OT1/cmss/m/it --> OT1/cmss/b/it on input line 41.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> OT1/cmtt/b/n on input line 40.
-LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 40.
+(Font)                  OT1/cmtt/m/n --> OT1/cmtt/b/n on input line 41.
+LaTeX Font Info:    Redeclaring symbol font `pureletters' on input line 41.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `normal'
-(Font)                  OT1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 40.
+(Font)                  OT1/cmss/m/it --> OT1/mathkerncmss/m/sl on input line 41.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  OT1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 40.
+(Font)                  OT1/cmss/b/it --> OT1/mathkerncmss/m/sl on input line 41.
 LaTeX Font Info:    Overwriting symbol font `pureletters' in version `bold'
-(Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on input line 40.
+(Font)                  OT1/mathkerncmss/m/sl --> OT1/mathkerncmss/bx/sl on input line 41.
  (/usr/share/texlive/texmf-dist/tex/latex/translator/translator-basic-dictionary-English.dict
 Dictionary: translator-basic-dictionary, Language: English 
 ) (/usr/share/texlive/texmf-dist/tex/latex/translator/translator-bibliography-dictionary-English.dict
@@ -866,51 +909,51 @@ Dictionary: translator-theorem-dictionary, Language: English
 <uiblogo.png, id=20, 374.3586pt x 71.0655pt>
 File: uiblogo.png Graphic file (type png)
 <use uiblogo.png>
-Package pdftex.def Info: uiblogo.png  used on input line 41.
+Package pdftex.def Info: uiblogo.png  used on input line 42.
 (pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} </home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/uiblogo.png>]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 60.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 61.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 60.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 61.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 60.
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 61.
  (/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
-LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on input line 60.
+LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on input line 61.
  (/usr/share/texlive/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
 File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/mathkerncmss.
 )
 File: uiblogo.png Graphic file (type png)
 <use uiblogo.png>
-Package pdftex.def Info: uiblogo.png  used on input line 60.
+Package pdftex.def Info: uiblogo.png  used on input line 61.
 (pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
  [2
 
 ]
 File: uiblogo.png Graphic file (type png)
 <use uiblogo.png>
-Package pdftex.def Info: uiblogo.png  used on input line 86.
+Package pdftex.def Info: uiblogo.png  used on input line 87.
 (pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
  [3
 
 ]
 File: uiblogo.png Graphic file (type png)
 <use uiblogo.png>
-Package pdftex.def Info: uiblogo.png  used on input line 105.
+Package pdftex.def Info: uiblogo.png  used on input line 106.
 (pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
  [4
 
 ]
 File: uiblogo.png Graphic file (type png)
 <use uiblogo.png>
-Package pdftex.def Info: uiblogo.png  used on input line 121.
+Package pdftex.def Info: uiblogo.png  used on input line 126.
 (pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
  [5
 
@@ -918,52 +961,81 @@ Package pdftex.def Info: uiblogo.png  used on input line 121.
 <square.jpg, id=170, 775.26pt x 923.085pt>
 File: square.jpg Graphic file (type jpg)
 <use square.jpg>
-Package pdftex.def Info: square.jpg  used on input line 132.
+Package pdftex.def Info: square.jpg  used on input line 137.
 (pdftex.def)             Requested size: 160.19762pt x 190.74075pt.
 
-Overfull \vbox (0.56064pt too high) detected at line 132
+Overfull \vbox (0.56064pt too high) detected at line 137
  []
 
 File: uiblogo.png Graphic file (type png)
 <use uiblogo.png>
-Package pdftex.def Info: uiblogo.png  used on input line 132.
+Package pdftex.def Info: uiblogo.png  used on input line 137.
 (pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
 [6
 
  </home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/square.jpg>]
 File: uiblogo.png Graphic file (type png)
 <use uiblogo.png>
-Package pdftex.def Info: uiblogo.png  used on input line 147.
+Package pdftex.def Info: uiblogo.png  used on input line 152.
 (pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
  [7
 
 ]
+<convergenceplot_k_f_constant.png, id=224, 526.96875pt x 395.22656pt>
+File: convergenceplot_k_f_constant.png Graphic file (type png)
+<use convergenceplot_k_f_constant.png>
+Package pdftex.def Info: convergenceplot_k_f_constant.png  used on input line 164.
+(pdftex.def)             Requested size: 239.60567pt x 179.70775pt.
 File: uiblogo.png Graphic file (type png)
 <use uiblogo.png>
-Package pdftex.def Info: uiblogo.png  used on input line 152.
+Package pdftex.def Info: uiblogo.png  used on input line 164.
 (pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
  [8
 
-]
+ </home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/convergenceplot_k_f_constant.png (PNG copy)>]
+<difference_analytical_numerical.png, id=253, 929.72343pt x 281.55188pt>
+File: difference_analytical_numerical.png Graphic file (type png)
+<use difference_analytical_numerical.png>
+Package pdftex.def Info: difference_analytical_numerical.png  used on input line 173.
+(pdftex.def)             Requested size: 359.4111pt x 108.83815pt.
 File: uiblogo.png Graphic file (type png)
 <use uiblogo.png>
-Package pdftex.def Info: uiblogo.png  used on input line 168.
+Package pdftex.def Info: uiblogo.png  used on input line 173.
 (pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
  [9
 
-]
+ </home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/difference_analytical_numerical.png (PNG copy)>]
+<convergenceplot_k_f_non_constant.png, id=281, 526.96875pt x 395.22656pt>
+File: convergenceplot_k_f_non_constant.png Graphic file (type png)
+<use convergenceplot_k_f_non_constant.png>
+Package pdftex.def Info: convergenceplot_k_f_non_constant.png  used on input line 187.
+(pdftex.def)             Requested size: 239.60567pt x 179.70775pt.
 File: uiblogo.png Graphic file (type png)
 <use uiblogo.png>
-Package pdftex.def Info: uiblogo.png  used on input line 174.
+Package pdftex.def Info: uiblogo.png  used on input line 187.
 (pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
  [10
+
+ </home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/convergenceplot_k_f_non_constant.png (PNG copy)>]
+File: uiblogo.png Graphic file (type png)
+<use uiblogo.png>
+Package pdftex.def Info: uiblogo.png  used on input line 203.
+(pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
+ [11
 
 ]
 File: uiblogo.png Graphic file (type png)
 <use uiblogo.png>
-Package pdftex.def Info: uiblogo.png  used on input line 183.
+Package pdftex.def Info: uiblogo.png  used on input line 208.
 (pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
- [11
+ [12
+
+]
+File: uiblogo.png Graphic file (type png)
+<use uiblogo.png>
+Package pdftex.def Info: uiblogo.png  used on input line 216.
+(pdftex.def)             Requested size: 85.57382pt x 16.24495pt.
+ [13
 
 ]
 \tf@nav=\write8
@@ -975,27 +1047,27 @@ Package pdftex.def Info: uiblogo.png  used on input line 183.
 \tf@snm=\write10
 \openout10 = `diapos.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 185.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 185.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 217.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 217.
  (/home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/diapos.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 185.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 185.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 217.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 217.
 Package rerunfilecheck Info: File `diapos.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 24526 strings out of 481239
- 492654 string characters out of 5920377
- 743364 words of memory out of 5000000
- 39202 multiletter control sequences out of 15000+600000
- 545928 words of font info for 66 fonts, out of 8000000 for 9000
+ 25589 strings out of 481239
+ 510271 string characters out of 5920377
+ 761684 words of memory out of 5000000
+ 40212 multiletter control sequences out of 15000+600000
+ 554832 words of font info for 94 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 58i,17n,80p,1089b,895s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 58i,17n,80p,873b,939s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfso1000.pfb>
-Output written on "/home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/diapos.pdf" (11 pages, 366532 bytes).
+Output written on "/home/ejerez/Escritorio/UNI/CUARTO (ERASMUS)/CS-II-project-3/presentation/diapos/diapos.pdf" (13 pages, 479256 bytes).
 PDF statistics:
- 379 PDF objects out of 1000 (max. 8388607)
- 335 compressed objects within 4 object streams
- 23 named destinations out of 1000 (max. 500000)
- 77 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 437 PDF objects out of 1000 (max. 8388607)
+ 389 compressed objects within 4 object streams
+ 30 named destinations out of 1000 (max. 500000)
+ 86 words of extra memory for PDF output out of 10000 (max. 10000000)
 
