@@ -51,29 +51,48 @@
     But we will only consider a case where flux is linear ant the thermal conductivity is constant.
     
     \subsection*{Error bounds computations}
-    Our main goal is for an approximated solution $v$, check how good it is compared to the real solution $u$ but without knowing it. The idea is that instead of measuring $\norm*{u-v} = \norm*{e_v}$ (which is the more natural way of measuring the error between both solutions), we will try to give an upper bound (called majorant) of $\norm*{k^{\frac{1}{2}}\div e_v}$. By integrating the PDE and some more computations we obtain:
+    Our main goal is for an approximated solution $v$, check how good it is compared to the real solution $u$ but without knowing it. The idea is that instead of measuring $\norm*{u-v} = \norm*{e_v}$ (which is the more natural way of measuring the error between both solutions), we will try to give an upper bound (called majorant) of $\norm*{k^{\frac{1}{2}}\div e_v}$ (This is called the error in the energy norm). By integrating the PDE and some more computations we obtain:
     \begin{align*}
-        \norm*{k^{\frac{1}{2}}\div e:v} \leq \norm*{k^{-\frac{1}{2}}(\bm{r}+k\div v)} + C_{\Omega,k}\norm*{f-\div \bm{r}} \equiv \mathcal{M}(v,r;f)
+        \norm*{k^{\frac{1}{2}}\div e_v} \leq \norm*{k^{-\frac{1}{2}}(\bm{r}+k\div v)} + C_{\Omega,k}\norm*{f-\div \bm{r}} \equiv \mathcal{M}(v,r;f)
     \end{align*}
     where $\bm{r}$ is an approximation to the flux function.
-    With this error bound, we will also consider the relative error:
+    With this error bound, one may ask hisself how can we trust the approximated solution: we may check that the majorant is "small", but to measure that "small" quantity we consider the relative error:
     \begin{align*}
         \frac{\norm*{k^{\frac{1}{2}}\div e_v}}{\norm*{k^{\frac{1}{2}}\div v}} \leq \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div v}}
     \end{align*}
-    Also, in order to determine the quality of the error bound we will compute (when we do know the real solution, of course) the efficiency index (for the potential), that measures how close is the error bound to the true error. For the energy error of the potential we will have:
+    Also, in order to determine the quality of the error bound we will compute (when we do know the real solution, of course) the efficiency index, that measures how close is the error bound to the true error. For the energy error of the potential we will have:
     \begin{align*}
         I_v = \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div e_v}}
     \end{align*}
-    Notice this efficiency index is in terms of the potential, but we can (and we will) also compute the efficiency index of the flux, or the combined efficiency index.
     We know, that for the case of the majorant this index will be bigger or equal to 1: the closest to 1 we are, the better we are doing.\\
-    For the previous computations we have been considering the potential energy error $e_v$, but we could also consider the flux energy error $e_r$, and then compute the called 'combined error':
+    On the other hand, if we want to consider both energy error of the potential and of the flux, we can compute what is called the combined efficiency index, defined as follow:
+    \begin{align*}
+        I_{v;r} = \frac{3\mathcal{M}(v,r;f)}{\norm*{(e_v, e_r)}_*}
+    \end{align*}
+    Where the norm used in the previous equality is one chosen to measure both errors at the same time and defined the following way:
     \begin{align*}
         \norm*{(e_v,e_r)}_{*} \equiv \norm*{k^{\frac{1}{2}}\div e_v} + \norm*{k^{-\frac{1}{2}}e_r} + C_{\Omega,k}\norm*{\div e_r}
-    \end{align*} 
+    \end{align*}
+    
     And indeed, we can prove with the previous concepts that 
     \begin{align*}
         \mathcal{M}(v,r;f) \leq  \norm*{(e_v,e_r)}_{*}  \leq 3\mathcal{M}(v,r;f)
     \end{align*}
+
+    That in terms of the efficiency index:
+    \begin{align*}
+        1 \leq I_{v;r} = \frac{3\mathcal{M}(v,r;f)}{\norm*{(e_v, e_r)}_*} \leq 3
+    \end{align*}
+
+    One thing to take into consideration is, because the way the Poincaré constant is defined:
+    \begin{align*}
+        C_{\omega,k} \equiv sup_e \frac{\norm*{e}}{\norm*{k^{\frac{1}{2}}\div{e}}}
+    \end{align*}
+    We can obtain that for any function $e$ it always will hold:
+    \begin{align*}
+        \norm*{e} \leq C_{\Omega,k}\norm*{k^{\frac{1}{2}}\div{e}} \leq C_{\Omega,k}\mathcal{M}(v,r;f)
+    \end{align*}
+    With this result we can really give an upper bound for the quantity we were trying to measure.
 
     So these are the computations that we will check for our concrete cases. But first, let us talk about the method used to do the computations:
     \subsection*{Implementation of the method}
@@ -109,7 +128,15 @@
     Once we have explained the procedure, let us dive in the numerical results.
 
     \subsection*{Results in 2D}
+    First thing we will check is the convergence of our method. As we know the real solution, we are computing the real error with our approximated solution. As we would expect, when we do decrease the size of each step (both x and y cause are the same), the error is less. This makes sense cause the approximations we are making are more accurate as we have more "boxes" with different data to approximate. The convergence is of order 2 as one can see in the graph:
+    In the graph we are plotting in a scale log log, so for knowing the order of convergence we just have to check the slope of the line we are plotting. As a comparison we have plotted too a line with a slope m = 2.
+    \begin{center}
+        \includegraphics[width = 0.7\linewidth]{../Images/convergence2d.jpg}
+    \end{center}
+
+    Indeed, with this we can conclude that the order of convergence of our method is 2. Once we knew that, we start computing all previously mentioned. For that, see the following table where we can appreciate all inequalities we talked before:
     \begin{table}[h!]
+        \centering
         \begin{tabular}{c | c | c | c | c | c }
             $\zeta$ & $\mathcal{M}$  & $\norm*{k^{\frac{1}{2}}\div e_v}$ & $\norm*{(e_v,e_r)}_{*}$ & $I_v^{eff}$ & $I_{v,r}^{eff}$ \\
             \hline \hline
@@ -120,6 +147,14 @@
         \end{tabular}
         \caption{2D - computations}
     \end{table}
+    
+    Indeed, one can easily check that the values of the combined efficiency index are between 1 and 3. Also we notice that the potential efficiency index tends to be a value of 4.3, which is not very good taking into consideration that the best we could get is 1. 
+    For seeing other inequalities more clearly we show in the following graph some quantities in the table, there one can se that indeed, the norm star is between the majorant and 3majorant, that the majorant is always bigger than the real error... etc.
+    \begin{center}
+        \includegraphics[width = 0.7\linewidth]{../Images/errorcomparison2d.jpg}
+    \end{center}
+
+
 
     \subsection*{Conclusion}
     We have done computations for problems where we do know the real solution, to conclude I would like to consider a case where we do not know this real solution. Would our bound be good? We obviously can check that with the relative error, but nevertheless, it would measure how close it is to the approximated solution, not to the real solution. That's the reason why we use the efficiency index. With this last computation we have both a majorant and minorant of the efficiency index, the problem is that we need the real solution for computing the efficiency index. The conclusion then is that the ideal case would be if we have both a majorant and minorant of the quantity we are trying to measure. This way we could know how wide is our range of values for that quantity. If that range is small, we know that both minorant and majorant are giving a good bound. But in the case it is very large, we can not really tell anything about the data. (Example of our domain with our bound)

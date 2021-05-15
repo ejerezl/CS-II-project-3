@@ -36,11 +36,16 @@ for i = 10:10:100
     convergence_error(j) = error;
     j = j + 1;
 end
+
+y1 = (grid_refinery).^2;
+loglog(grid_refinery, y1);
+hold on
 loglog(grid_refinery, convergence_error)
 title('Convergence Plot');
-legend({'numerical scheme','10^1'}, 'Location','northwest')
-xlabel('gridsize')
-ylabel('error')
+legend({'x^2', 'Real error'}, 'Location','northwest')
+xlabel('\Delta x')
+ylabel('Error')
+hold off
 P = polyfit(log(grid_refinery), log(convergence_error),1);
 slope = P(1);
 fprintf("Convergence rate: %f\n", slope);

@@ -16,6 +16,7 @@
 \usepackage{bbm}
 \usepackage[export]{adjustbox}
 
+
 \title{Error bounds for numerical approximations}
 \author[MAT264] 
 {Kaja Jurak, Esther Jerez}
@@ -158,7 +159,7 @@ F_L &= F_R - \int\limits_{x_1}^{x_2} f(x,y) \,dx\ \\
 \begin{figure}[t]
 %\centering
 \includegraphics[width = 0.7\linewidth]{convergenceplot_k_f_constant.png}
-\caption{Poisson equation in 1d with diffusity $k(x) = 1$ and heat source $f(x) = 1$.}
+\caption{Poisson equation in 1d with diffusivity $k(x) = 1$ and heat source $f(x) = 1$.}
 \label{fig:Convergence1d1}
 \end{figure}
 \end{frame}
@@ -179,11 +180,31 @@ F_L &= F_R - \int\limits_{x_1}^{x_2} f(x,y) \,dx\ \\
 \begin{figure}[t]
 \centering
 \includegraphics[width = 0.7\linewidth]{convergenceplot_k_f_non_constant.png}
-\caption{Poisson equation in 1d with diffusity $k(x) = 2-x$ and heat source $f(x) = 4\pi^2\sin(2\pi x)\cdot k(x) + 2\pi\cos(2\pi x)$.}
+\caption{Poisson equation in 1d with diffusivity $k(x) = 2-x$ and heat source $f(x) = 4\pi^2\sin(2\pi x)\cdot k(x) + 2\pi\cos(2\pi x)$.}
 \label{fig:Convergence1d}
 \end{figure}
 
 % \end{minipage}
+\end{frame}
+
+\begin{frame}[c]
+	\frametitle{Results in 2D}
+	Data we work with:
+	\begin{align*}
+		f(x,y) &= 8\pi^2\sin{2\pi x}\sin{2\pi y}k(x,y) - 2\pi\cos{2\pi x}\sin{2\pi y}(y-1)+ \\ &2\pi\sin{2\pi x}\cos{2\pi y}(x-1) \\
+		k(x,y) &= 1 + (x-1)(y-1) \\
+		u(x,y) &= \sin(2\pi x)\sin(2\pi y)
+	\end{align*}
+	
+
+\end{frame}
+\begin{frame}
+	\frametitle{Results in 2D}
+	\begin{figure}
+		\centering
+        \includegraphics[width = 0.7\linewidth]{../../Images/convergence2d.jpg}
+		\caption{Convergence of our method 2D}
+    \end{figure}
 \end{frame}
 
 \begin{frame}[c]
@@ -203,15 +224,31 @@ F_L &= F_R - \int\limits_{x_1}^{x_2} f(x,y) \,dx\ \\
 \end{frame}
 
 \begin{frame}
-\frametitle{Conclusion}
-
+	\frametitle{Results in 2D}
+	\begin{figure}[t]
+		\centering
+		\includegraphics[width = 0.7\linewidth]{../../Images/errorcomparison2d.jpg}
+		\caption{Comparison of some quantities in 2D}
+	\end{figure}
 \end{frame}
 
 \begin{frame}
-\frametitle{References}
+\frametitle{Conclusion}
 \begin{enumerate}
-\item[I] Lecture Notes Mat264: Computational Science II, Univisersitet i Bergen, Jan Nordbotten, Spring Semester 2021
-\item[II] Matlab files from Erlend
+	\item Relative error measures the error respect the approximated solution, not the real solution.
+	\item Can we really trust our method? Is it good enough?
+	\item What if we don't know the real solution? We can not use the concept of efficiency index
+	\item Would be interesting to implement a minorant for the energy error.
 \end{enumerate}
 \end{frame}
+
+\begin{frame}
+	\frametitle{References}
+	\begin{enumerate}
+		\item[I] Lecture Notes Mat264: Computational Science II, Univisersitet i Bergen, Jan Nordbotten, Spring Semester 2021.
+		\item[II] Matlab files from Erlend.
+		\item[III]  \href{https://en.wikipedia.org/wiki/Heat_equation\#Specific_examples}{Wikipedia Heat equation}
+	\end{enumerate}
+\end{frame}
+
 \end{document}
