@@ -21,7 +21,7 @@
     \subsection*{Introduction}
     Our goal for this project is to give accurate error bounds for approximated solutions of a problem described by an elliptic PDE. In this project we are working with the steady-state of the heat equation, which purpose is modeling how a quantity such as heat diffuses through a given region. The heat equation was first developed by Fourier studying how thermal conduction works, while the steady-state heat equation (not dependent on time, $\frac{\partial u}{\partial t} = 0$ ) of a volume that contains a heat source is described by Poisson's equation:
     \begin{align*}
-        \bm{q} = -k \div ^2 u
+        \bm{q} = -k \nabla ^2 u
     \end{align*}
     where 
     \begin{enumerate}
@@ -51,18 +51,18 @@
     But we will only consider a case where flux is linear ant the thermal conductivity is constant.
     
     \subsection*{Error bounds computations}
-    Our main goal is for an approximated solution $v$, check how good it is compared to the real solution $u$ but without knowing it. The idea is that instead of measuring $\norm*{u-v} = \norm*{e_v}$ (which is the more natural way of measuring the error between both solutions), we will try to give an upper bound (called majorant) of $\norm*{k^{\frac{1}{2}}\div e_v}$ (This is called the error in the energy norm). By integrating the PDE and some more computations we obtain:
+    Our main goal is for an approximated solution $v$, check how good it is compared to the real solution $u$ but without knowing it. The idea is that instead of measuring $\norm*{u-v} = \norm*{e_v}$ (which is the more natural way of measuring the error between both solutions), we will try to give an upper bound (called majorant) of $\norm*{k^{\frac{1}{2}}\nabla e_v}$ (This is called the error in the energy norm). By integrating the PDE and some more computations we obtain:
     \begin{align*}
-        \norm*{k^{\frac{1}{2}}\div e_v} \leq \norm*{k^{-\frac{1}{2}}(\bm{r}+k\div v)} + C_{\Omega,k}\norm*{f-\div \bm{r}} \equiv \mathcal{M}(v,r;f)
+        \norm*{k^{\frac{1}{2}}\nabla e_v} \leq \norm*{k^{-\frac{1}{2}}(\bm{r}+k\nabla v)} + C_{\Omega,k}\norm*{f-\nabla \bm{r}} \equiv \mathcal{M}(v,r;f)
     \end{align*}
     where $\bm{r}$ is an approximation to the flux function.
     With this error bound, one may ask hisself how can we trust the approximated solution: we may check that the majorant is "small", but to measure that "small" quantity we consider the relative error:
     \begin{align*}
-        \frac{\norm*{k^{\frac{1}{2}}\div e_v}}{\norm*{k^{\frac{1}{2}}\div v}} \leq \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div v}}
+        \frac{\norm*{k^{\frac{1}{2}}\nabla e_v}}{\norm*{k^{\frac{1}{2}}\nabla v}} \leq \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\nabla v}}
     \end{align*}
     Also, in order to determine the quality of the error bound we will compute (when we do know the real solution, of course) the efficiency index, that measures how close is the error bound to the true error. For the energy error of the potential we will have:
     \begin{align*}
-        I_v = \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div e_v}}
+        I_v = \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\nabla e_v}}
     \end{align*}
     We know, that for the case of the majorant this index will be bigger or equal to 1: the closest to 1 we are, the better we are doing.\\
     On the other hand, if we want to consider both energy error of the potential and of the flux, we can compute what is called the combined efficiency index, defined as follow:
@@ -71,7 +71,7 @@
     \end{align*}
     Where the norm used in the previous equality is one chosen to measure both errors at the same time and defined the following way:
     \begin{align*}
-        \norm*{(e_v,e_r)}_{*} \equiv \norm*{k^{\frac{1}{2}}\div e_v} + \norm*{k^{-\frac{1}{2}}e_r} + C_{\Omega,k}\norm*{\div e_r}
+        \norm*{(e_v,e_r)}_{*} \equiv \norm*{k^{\frac{1}{2}}\nabla e_v} + \norm*{k^{-\frac{1}{2}}e_r} + C_{\Omega,k}\norm*{\nabla e_r}
     \end{align*}
     
     And indeed, we can prove with the previous concepts that 
@@ -86,11 +86,11 @@
 
     One thing to take into consideration is, because the way the Poincaré constant is defined:
     \begin{align*}
-        C_{\omega,k} \equiv sup_e \frac{\norm*{e}}{\norm*{k^{\frac{1}{2}}\div{e}}}
+        C_{\omega,k} \equiv sup_e \frac{\norm*{e}}{\norm*{k^{\frac{1}{2}}\nabla{e}}}
     \end{align*}
     We can obtain that for any function $e$ it always will hold:
     \begin{align*}
-        \norm*{e} \leq C_{\Omega,k}\norm*{k^{\frac{1}{2}}\div{e}} \leq C_{\Omega,k}\mathcal{M}(v,r;f)
+        \norm*{e} \leq C_{\Omega,k}\norm*{k^{\frac{1}{2}}\nabla{e}} \leq C_{\Omega,k}\mathcal{M}(v,r;f)
     \end{align*}
     With this result we can really give an upper bound for the quantity we were trying to measure.
 
@@ -138,7 +138,7 @@
     \begin{table}[h!]
         \centering
         \begin{tabular}{c | c | c | c | c | c }
-            $\zeta$ & $\mathcal{M}$  & $\norm*{k^{\frac{1}{2}}\div e_v}$ & $\norm*{(e_v,e_r)}_{*}$ & $I_v^{eff}$ & $I_{v,r}^{eff}$ \\
+            $\zeta$ & $\mathcal{M}$  & $\norm*{k^{\frac{1}{2}}\nabla e_v}$ & $\norm*{(e_v,e_r)}_{*}$ & $I_v^{eff}$ & $I_{v,r}^{eff}$ \\
             \hline \hline
             $\zeta_1$ (4) & 2.61 & 6.36e-1 & 2.99 & 4.10 & 2.62 \\ 
             $\zeta_2$ & 1.25 & 2.95e-1 & 1.43 & 4.26 & 2.63 \\
