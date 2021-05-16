@@ -1,13 +1,3 @@
-Computations with values: nx = 10, ny = 10
-Majorant: 4.404090 
- Real_error_potential 0.020926
-Energy_potential_norm 1.147717
- Norm_star 5.085195 
-Relative_error 0.266884
-Efficiency index (potential) 3.837261
- Efficiency index (combined) 2.598184
-Bound: 0.899358
-
 Computations with values: nx = 20, ny = 20
 Majorant: 2.059341 
  Real_error_potential 0.004659
@@ -17,34 +7,4 @@ Relative_error 0.102376
 Efficiency index (potential) 4.180811
  Efficiency index (combined) 2.629329
 Bound: 0.419325
-
-Computations with values: nx = 30, ny = 30
-Majorant: 1.346763 
- Real_error_potential 0.002003
-Energy_potential_norm 0.316067
- Norm_star 1.532595 
-Relative_error 0.064505
-Efficiency index (potential) 4.261000
- Efficiency index (combined) 2.636241
-Bound: 0.274106
-
-Computations with values: nx = 40, ny = 40
-Majorant: 1.000895 
- Real_error_potential 0.001109
-Energy_potential_norm 0.233288
- Norm_star 1.137916 
-Relative_error 0.047320
-Efficiency index (potential) 4.290392
- Efficiency index (combined) 2.638758
-Bound: 0.203681
-
-Computations with values: nx = 50, ny = 50
-Majorant: 0.796450 
- Real_error_potential 0.000703
-Energy_potential_norm 0.185038
- Norm_star 0.905077 
-Relative_error 0.037430
-Efficiency index (potential) 4.304252
- Efficiency index (combined) 2.639941
-Bound: 0.162066
 

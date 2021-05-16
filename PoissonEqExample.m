@@ -5,7 +5,6 @@
 k = @(x,y) 5;
 % Exact solution
 u_fabricated = @(x,y) sin(2*pi*x).*sin(2*pi*y);
-
 %RHS function
 %f = @(x,y) 8*pi*pi*sin(2*pi*x).*sin(2*pi*y).*k(x,y)-(2*pi*cos(2*x*pi).*sin(2*pi*y).*(y-1)+2*pi*sin(2*pi*x).*cos(2*pi*y).*(x-1));
 f = @(x,y) 3;
