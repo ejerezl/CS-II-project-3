@@ -6,7 +6,7 @@
 k1 = @(x) 2 - x;
 u_fabricated = @(x) sin(2*pi*x);
 q_fabricated = @(x) -2*pi*cos(2*pi*x).*(2-x);
-f = @(x) 4*pi*pi*sin(2*pi*x).*k1(x) + 2*pi*cos(2*pi*x);
+f = @(x) 4*pi*pi*sin(2*pi*x).*(2-x) + 2*pi*cos(2*pi*x);
 k_const = false;
 f_const = false;
 
@@ -92,7 +92,7 @@ X = (0:dx:1);
 subplot(1,2,1)
 plot(X,abs(u-U_fabricated))
 xlabel('x', 'FontSize', 16)
-ylabel('u_{true} - u_{analytical}','FontSize',16)
+ylabel('|u_{true} - u_{analytical}|','FontSize',16)
 title({'absolute difference between analytical','and numerical potential'},'FontSize',14)
 
 X = zeros(nx+1,1); %new grid
@@ -104,7 +104,7 @@ end
 subplot(1,2,2)
 plot(X,abs(Q_fabricated-q))
 xlabel('x', 'FontSize', 16)
-ylabel('q_{true} - q_{analytical}','FontSize',16)
+ylabel('|q_{true} - q_{analytical}|','FontSize',16)
 title({'absolute difference between analytical','and numerical flux'},'FontSize',14)
 
 %%%%% Error calculation & Convergence %%%%%
@@ -137,7 +137,7 @@ if k_const && f_const
         combined_error(i) = (conv_rate + err_flux + c*err_cons);
         efficiency(i) = (err_calc + c*err_cons)/conv_rate;
         efficiency_star(i) = 3*(err_calc + c*err_cons)/(conv_rate + err_flux + c*err_cons);        
-        nx = 2*nx;
+        nx = 4*nx;
         disp(i)
         fprintf('true error: %d.\n', conv_rate);
         fprintf('energy error: %d.\n', err_calc);
@@ -153,23 +153,23 @@ if k_const && f_const
     %Plot convergence
     figure(4)
     yyaxis left
-    loglog(grid_refinery, convergence_error,'-o')
-    title('Convergence Plot');
+    loglog(grid_refinery, convergence_error,'-v')
+    title('Error Comparison');
     hold on
-    loglog(grid_refinery,majorant, ':o')
-    loglog(grid_refinery, 3*majorant, '-.o')
+    loglog(grid_refinery,majorant, ':*')
+    loglog(grid_refinery, 3*majorant, '-.^')
     loglog(grid_refinery, combined_error, '--o')
     ylabel('error', 'FontSize', 16)
     
     yyaxis right
     plot(grid_refinery, efficiency, '--o')
-    plot(grid_refinery, efficiency_star, '-.o')
+    plot(grid_refinery, efficiency_star, '-.*')
     yline(1)
     yline(3)
     hold off
     
-    legend({'$\| k^(1/2)\nabla (u-v)\|$', '$\mathcal{M}(r,v,f)$', '$3\mathcal{M}(r,v,f)$', '$\| (e_v, e_r)\|_\ast$', '$I_v$', '$I_v^\ast$' }, 'Location','northwest', 'Interpreter', 'latex')
-    xlabel('gridsize', 'FontSize', 16)
+    legend({'$\| k^{1/2}\nabla (u-v)\|$', '$\mathcal{M}(r,v,f)$', '$3\mathcal{M}(r,v,f)$', '$\| (e_v, e_r)\|_\ast$', '$I_v^{eff}$', '$I_{v,r}^{eff}$' }, 'Location','northwest', 'Interpreter', 'latex', 'FontSize', 12)
+    xlabel('$\Delta x$', 'FontSize', 16, 'Interpreter', 'latex')
     ylabel('efficiency index', 'FontSize', 16)
     
     xlim([0 0.07])
@@ -211,7 +211,8 @@ elseif k_const
         fprintf('combined error norm: %d.\n', conv_rate + err_flux + c*err_cons);
         fprintf('Majorant: %d.\n', err_calc+c*err_cons);
         fprintf('3*Majorant: %d.\n', 3*(err_calc+c*err_cons));
-        fprintf('efficiency index: %d.\n', (err_calc+c*err_cons)/conv_rate)
+        fprintf('efficiency index potential: %d.\n', (err_calc+c*err_cons)/conv_rate)
+        fprintf('efficiency Index of flux: %d.\n',(err_calc+c*err_cons)/err_flux )
         fprintf('combined efficiency index: %d.\n', 3*(err_calc+c*err_cons)/(conv_rate + err_flux + c*err_cons))
     end
     
@@ -219,29 +220,29 @@ elseif k_const
     %Plot convergence
     figure(4)
     yyaxis left
-    loglog(grid_refinery, convergence_error, '-o')
-    title({'Convergence Plot 1D'}, 'FontSize', 14);
+    loglog(grid_refinery, convergence_error, '-s')
+    title({'Error Comparison 1D'}, 'FontSize', 14);
     hold on
     loglog(grid_refinery, majorant, ':o')
-    loglog(grid_refinery, 3*majorant, '-.o')
-    loglog(grid_refinery, combined_error, '--o')
+    loglog(grid_refinery, 3*majorant, '-.^')
+    loglog(grid_refinery, combined_error, '--*')
     ylabel({'error'}, 'FontSize', 16)
 
     yyaxis right
     plot(grid_refinery, efficiency, '--o')
-    plot(grid_refinery, efficiency_star, '-.o')
+    plot(grid_refinery, efficiency_star, ':*')
     yline(1)
     yline(3)
     legend({'$\| k^(1/2)\nabla (u-v)\|$', '$\mathcal{M}(r,v,f)$', '$3\mathcal{M}(r,v,f)$', '$\| (e_v, e_r)\|_\ast$', '$I_v$','$I^\ast_v$'}, 'Location','northwest', 'Interpreter', 'latex')
     hold off
     
-    xlabel({'gridsize'}, 'FontSize', 16)
+    xlabel({'$\Delta x$'}, 'FontSize', 16, 'Interpreter', 'latex')
     ylabel({'efficiency index'},  'FontSize', 16)
     xlim([0 0.07])
     ylim([0.8 3.5])
    
 else
-    c=1/sqrt(14.3249); %14.3249 is smallest eigenvalue of A which is not 1
+    
     [err_true, err_calc, err_cons, err_v, err_flux] = energy_error_norm3(u, q, nx, edges, k1);
     
     %Runge Kutta estimate type 1
@@ -251,17 +252,31 @@ else
     fprintf('Runge-Kutta estimate: %d.\n', err2);
     
     %Convergence rate
+    %c = 1/sqrt(14); %smalles EV of A not equal to 1
     convergence_error = zeros(6,1);
     grid_refinery = zeros(6,1);
     majorant = zeros(6,1);
     combined_error = zeros(6,1);
     efficiency = zeros(6,1);
     efficiency_star = zeros(6,1);
+    err_calc_2 = zeros(6,1);
+    err_cons_2 = zeros(6,1);
+    err_flux2 = zeros(6,1);
     for i=1:6
-        [conv_rate, grid_size, err_calc, err_cons, err_v, err_flux] = convergence3(nx);
+        [conv_rate, grid_size, err_calc, err_cons, err_v, err_flux, A] = convergence3(nx);
+%         A_EV = eigs(A,10, 'smallestabs');
+%         c = 1/sqrt(min(A_EV(A_EV>1 | A_EV<0.999)));
+%         fprintf('eigenvalues %d.\n', A_EV)
+%         fprintf('c %d.\n', c);
+        eig_vals = eigs(A, nx, 'smallestabs');
+        C_omega_index = find(abs(eig_vals - 1) > 1e-12);
+        c = 1/sqrt(eig_vals(C_omega_index(1)));
         err1 = [conv_rate, grid_size];
         convergence_error(i) = err1(1);
         grid_refinery(i) = err1(2);
+        err_calc_2(i) = err_calc;
+        err_cons_2(i) = c*err_cons;
+        err_flux2(i) = err_flux;
         majorant(i) = (err_calc+c*err_cons);
         combined_error(i) = (conv_rate + err_flux + c*err_cons); 
         efficiency(i) = (err_calc + c*err_cons)/conv_rate;
@@ -275,7 +290,8 @@ else
         fprintf('combined error norm: %d.\n', conv_rate + err_flux + c*err_cons);
         fprintf('Majorant: %d.\n', err_calc+c*err_cons);
         fprintf('3*Majorant: %d.\n', 3*(err_calc+c*err_cons));
-        fprintf('efficiency index: %d.\n', (err_calc+c*err_cons)/conv_rate)
+        fprintf('efficiency index potential: %d.\n', (err_calc+c*err_cons)/conv_rate)
+        fprintf('efficiency Index of flux: %d.\n',(err_calc+c*err_cons)/err_flux )
         fprintf('combined efficiency index: %d.\n', 3*(err_calc+c*err_cons)/(conv_rate + err_flux + c*err_cons))
     end
     %Plot convergence
@@ -287,6 +303,9 @@ else
     loglog(grid_refinery, majorant,':o')
     loglog(grid_refinery, 3*majorant, '--o')
     loglog(grid_refinery, combined_error, '-.o')
+    loglog(grid_refinery, err_calc_2)
+    loglog(grid_refinery, err_cons_2)
+    loglog(grid_refinery, err_flux2)
     ylabel({'error'}, 'FontSize', 16)
 
     yyaxis right
@@ -296,12 +315,12 @@ else
     yline(3)
     hold off
     
-    legend({'$\| k^{1/2}\nabla (u-v)\|$', '$\mathcal{M}(r,v,f)$', '$3\mathcal{M}(r,v,f)$', '$\| (e_v, e_r)\|_\ast$', '$I_v$','$I^\ast_v$'}, 'Location','northwest', 'Interpreter', 'latex')
+    legend({'$\| k^{1/2}\nabla (u-v)\|$', '$\mathcal{M}(r,v,f)$', '$3\mathcal{M}(r,v,f)$', '$\| (e_v, e_r)\|_\ast$','errcalc', 'errcons','err_flux', '$I_v$','$I^\ast_v$'}, 'Location','northwest', 'Interpreter', 'latex')
     
     xlabel({'gridsize'}, 'FontSize', 16)
     ylabel({'efficiency index'},  'FontSize', 16)
     xlim([0 0.07])
-    ylim([0.8 3.5])
+    %ylim([0.8 3.5])
 end
 
 

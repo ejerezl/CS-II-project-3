@@ -57,12 +57,15 @@ err_calc = sqrt(err_calc);
 % Calculate conservation integral
 err_cons = 0;
 for i=1:num_cells
-    b1 = (q(i+1,1)-q(i,1))/(grid(i+1)-grid(i));
-    err1 = 8*pi^4*(grid(i+1)-grid(i));
-    err2 = -2*pi^3*(sin(4*pi*grid(i+1))-sin(4*pi*grid(i)));
-    err3 = 4*pi*b1*(cos(2*pi*grid(i+1))-cos(2*pi*grid(i)));
-    err4 = b1^2*(grid(i+1)-grid(i));
-    err_cons = err_cons + err1 + err2 + err3 + err4;
+    b_1 = (q(i+1,1)-q(i,1))/(grid(i+1)-grid(i));
+%     err1 = 8*pi^4*(grid(i+1)-grid(i));
+%     err2 = -2*pi^3*(sin(4*pi*grid(i+1))-sin(4*pi*grid(i)));
+%     err3 = 4*pi*b1*(cos(2*pi*grid(i+1))-cos(2*pi*grid(i)));
+%     err4 = b1^2*(grid(i+1)-grid(i));
+%     err_cons = err_cons + err1 + err2 + err3 + err4;
+    x_s = grid(i);
+    d_x = grid(i+1) - grid(i);
+    err_cons = err_cons + -2*pi^3*sin(4*pi*x_s+4*pi*d_x)+4*pi*b_1*cos(2*pi*x_s+2*pi*d_x)+2*pi^3*sin(4*pi*x_s)-4*pi*b_1*cos(2*pi*x_s)+(b_1^2+8*pi^4)*d_x;
 end
 
 err_cons = sqrt(err_cons);

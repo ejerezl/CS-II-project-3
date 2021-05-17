@@ -15,6 +15,7 @@
 \usepackage{bm}
 \usepackage{bbm}
 \usepackage[export]{adjustbox}
+\usepackage{makecell}
 
 
 \title{Error bounds for numerical approximations}
@@ -45,7 +46,7 @@
 	\frametitle{Introduction}
 	Our main goal is to give accurate error bounds for approximated solutions of a PDE. In concrete, we will focus on the problem of the steady-state heat equation, described by  \alert{Poisson's equation}:
 	\begin{align*}
-	\bm{q} = -k \nabla ^2 u
+	\bm{q} = -k \div ^2 u
 	\end{align*}
 	where 
 	\begin{enumerate}
@@ -73,8 +74,7 @@
 	And we will consider the following situations:
 	\begin{itemize}
 		\item[1.] Linear flux ($\frac{\partial q}{\partial x} = 1$) and constant thermal conductivity ($k=1$).
-		\item[2.] Linear flux and thermal conductivity not constant.
-		\item[3.] Flux non-linear ant thermal conductivity not constant.
+		\item[2.] Non-linear flux and non-constant conductivity
 	\end{itemize}
 	
 	\column{0.5\textwidth}
@@ -91,30 +91,30 @@
 \frametitle{Error bounds computations}
 We are considering a general elliptic PDE:
 \begin{align*}
-\nabla q = f , \quad q =-k \nabla u
+\div q = f , \quad q =-k \div u
 \end{align*}
-Main idea: instead of measuring $\norm*{u-v} = \norm*{e_v}$, study $\norm*{k^{\frac{1}{2}}\nabla e_v}$. 
+Main idea: instead of measuring $\norm*{u-v} = \norm*{e_v}$, study $\norm*{k^{\frac{1}{2}}\div e_v}$. 
 \\ By integrating the PDE and some more computations we obtain:
 \begin{align*}
-\norm*{k^{\frac{1}{2}}\nabla e:v} \leq \norm*{k^{-\frac{1}{2}}(\bm{r}+k\nabla v)} + C_{\Omega,k}\norm*{f-\nabla \bm{r}} \equiv \mathcal{M}(v,r;f)
+\norm*{k^{\frac{1}{2}}\div e_v} \leq \norm*{k^{-\frac{1}{2}}(\bm{r}+k\div v)} + C_{\Omega,k}\norm*{f-\div \bm{r}} \equiv \mathcal{M}(v,r;f)
 \end{align*}
 where $\bm{r}$ is an approximation to the flux function.
 With this error bound, we will also consider the \alert{relative error}:
 \begin{align*}
-\frac{\norm*{k^{\frac{1}{2}}\nabla e_v}}{\norm*{k^{\frac{1}{2}}\nabla v}} \leq \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\nabla v}}
+\frac{\norm*{k^{\frac{1}{2}}\div e_v}}{\norm*{k^{\frac{1}{2}}\div v}} \leq \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div v}}
 \end{align*}
 
 \end{frame}
 
 \begin{frame}
 \frametitle{Error bounds computations}
-When we do know the the real solution, we will also compute the \alert{efficiency index of the potential}:
+When we do know the the real solution, we will also compute the \alert{efficiency index} (for the potential):
 \begin{align*}
-I_v = \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\nabla e_v}}
+I_v^{eff} = \frac{\mathcal{M}(v,r;f)}{\norm*{k^{\frac{1}{2}}\div e_v}}
 \end{align*}
-Combining the energy errors of both the potential and the flux:
+Combine the energy errors of both the potential and the flux:
 \begin{align*}
-\norm*{(e_v,e_r)}_{*} \equiv \norm*{k^{\frac{1}{2}}\nabla e_v} + \norm*{k^{-\frac{1}{2}}e_r} + C_{\Omega,k}\norm*{\nabla e_r}
+\norm*{(e_v,e_r)}_{*} \equiv \norm*{k^{\frac{1}{2}}\div e_v} + \norm*{k^{-\frac{1}{2}}e_r} + C_{\Omega,k}\norm*{\div e_r}
 \end{align*} 
 And indeed, we can prove with the previous concepts that 
 \begin{align*}
@@ -122,20 +122,8 @@ And indeed, we can prove with the previous concepts that
 \end{align*}
 respectively
 \begin{align*}
-	1 \leq I_{v;r} = \frac{3\mathcal{M}(v,r;f)}{\norm*{(e_v, e_r)}_*} \leq 3
+1 \leq I_{v,r}^{eff} = \frac{3\mathcal{M}(v,r;f) }{\norm*{(e_v,e_r)}_{*}} \leq 3
 \end{align*}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Error bounds computations}
-	Also, if we consider the definition of the Poincaré constant:
-	\begin{align*}
-        C_{\omega,k} \equiv sup_e \frac{\norm*{e}}{\norm*{k^{\frac{1}{2}}\nabla{e}}}
-    \end{align*}
-    We can obtain that for any function $e$ it always will hold:
-    \begin{align*}
-        \norm*{e} \leq C_{\Omega,k}\norm*{k^{\frac{1}{2}}\nabla{e}} \leq C_{\Omega,k}\mathcal{M}(v,r;f)
-    \end{align*}
 \end{frame}
 
 \begin{frame}
@@ -143,12 +131,8 @@ respectively
 \begin{multicols}{2}[\columnsep2em] 
 \includegraphics[width=\linewidth]{square.jpg}
 \columnbreak
-\begin{itemize}
-	\item For each cell, we will approximate the potential ($v_h \approx u$)
-	\item flux satisfies an integral form of conservation, so we can compute the flux ($r_h$) in every edge surrounding the cell using finite difference.
-	\item Interpolating both flux and potential we can then obtain functions smooth enough to work with them. 
-\end{itemize}
 
+For each cell, we will approximate the potential ($v_h \approx u$), and the flux satisfies an integral form of conservation, so we can compute the flux ($r_h$) in every edge surrounding the cell using finite difference. Interpolating both flux and potential we can then obtain functions smooth enough to work with them. 
 \end{multicols}
 
 \end{frame}
@@ -169,94 +153,125 @@ F_L &= F_R - \int\limits_{x_1}^{x_2} f(x,y) \,dx\ \\
 \end{frame}
 
 \begin{frame}
-\frametitle{Results in 1D }
+\frametitle{Results in 1D - $k,f$ constant}
 %\begin{minipage}{0.8\textwidth}
 \vspace{-18pt}
 \begin{figure}[t]
 %\centering
 \includegraphics[width = 0.7\linewidth]{convergenceplot_k_f_constant.png}
-\caption{Poisson equation in 1d with diffusivity $k(x) = 1$ and heat source $f(x) = 1$.}
+\caption{Poisson equation in 1d with conductivity $k(x) = 1$ and heat source $f(x) = 1$.}
 \label{fig:Convergence1d1}
 \end{figure}
 \end{frame}
 
-\begin{frame}{Result 1D}
+\begin{frame}{Result 1D - $k$ non-constant, $f$ non-linear }
 \begin{figure}
+\vspace{10pt}
 \centering
 \includegraphics[width = 1.05\linewidth, left]{difference_analytical_numerical.png}
-\caption{Absolute difference between analytical and numerical solution of Poisson equation with $k(x) = 2-x$ and $f(x) = 4\pi^2\sin(2\pi x)\cdot k(x) + 2\pi\cos(2\pi x)$.}
+\caption{Absolute difference between analytical and numerical solution of Poisson equation with $k(x) = 2-x$ and $f(x) = 4\pi^2\sin(2\pi x)\cdot (2-x) + 2\pi\cos(2\pi x)$.}
 \label{fig:fig:diff}
 \end{figure}
 \end{frame}
 
 \begin{frame}
-\frametitle{Results in 1D }
+\frametitle{Results in 1D - $k$ non-constant, $f$ non-linear }
 %\begin{minipage}{0.8\textwidth}
 \vspace{-18pt}
 \begin{figure}[t]
 \centering
 \includegraphics[width = 0.7\linewidth]{convergenceplot_k_f_non_constant.png}
-\caption{Poisson equation in 1d with diffusivity $k(x) = 2-x$ and heat source $f(x) = 4\pi^2\sin(2\pi x)\cdot k(x) + 2\pi\cos(2\pi x)$.}
+\caption{Poisson equation in 1d with conductivity $k(x) = 2-x$ and $f(x) = 4\pi^2\sin(2\pi x)\cdot (2-x) + 2\pi\cos(2\pi x)$.}
 \label{fig:Convergence1d}
 \end{figure}
 
 % \end{minipage}
 \end{frame}
-\begin{frame}
-	\frametitle{Results in 2D}
-	\begin{figure}
-		\centering
-        \includegraphics[width = 0.9\linewidth]{../../Images/absnorm.jpg}
-		\caption{$f(x,y) = 8\pi^2\sin{2\pi x}\sin{2\pi y}k(x,y) - 2\pi\cos{2\pi x}\sin{2\pi y}(y-1)$ $+ 2\pi\sin{2\pi x}\cos{2\pi y}(x-1) $ and 
-		$k(x,y) = 1 + (x-1)(y-1)$}
-    \end{figure}
-	
 
+\begin{frame}{Runge-Kutta estimate in 1D}
+Consider the convergence rate $\alpha$ of a method is known: $ \norm{u-v_h} = \mathcal{O}(h^\alpha)$
+Then for $h_2 = \xi\cdot h_1$ the estimate holds:
+\begin{equation*}
+\norm{u - v_{h_1}} \leq \frac{1}{\xi^\alpha -1} \cdot \norm {v_{h_1} - v_{h_2}}
+\end{equation*}
+For the two cases the estimate in the energy norm is as follows:
+\begin{center}
+\begin{table}
+\begin{tabular}{ c|c|c } 
+
+k, f& $\| k^\frac{1}{2} \nabla (u-v) \|$ & $\frac{1}{\xi^\alpha -1} \cdot \norm { k^\frac{1}{2} \nabla (v_{h_1} - v_{h_2})}$ \\
+\hline \hline
+$k(x)=1, f(x)= 1$ & $1.8\cdot 10^{-2}$ & $8.4\cdot 10^{-2}$\\
+\hline
+% \makecell{$k = 1$,\\ $f = 4\pi^2 \sin(2\pi x)$} & $5.03\cdot 10^{-1}$ & $ 1.28\cdot 10^{0}$\\
+\makecell{$k(x) = 2-x,$ \\ $f(x) = 4\pi^2 \sin(2\pi x)\cdot k(x)$ \\ $+ 2\pi\cos(2\pi x) $} & $5.05\cdot 10^{-1}$ & $ 1.01\cdot 10^{0}$
+\end{tabular}
+\caption{Runge-Kutta estimates in the energy norm for the given functions with $h_1 = 8h_2$ and $\alpha = 1$.}
+\end{table}
+\end{center}
 \end{frame}
 
 \begin{frame}[c]
-    \frametitle{Results in 2D}
-    \begin{table}[c]
-		\begin{tabular}{c | c | c | c | c | c } 
-            $\zeta$ & $\mathcal{M}$  & $\norm*{k^{\frac{1}{2}}\nabla e_v}$ & $\norm*{(e_v,e_r)}_{*}$ & $I_v^{eff}$ & $I_{v,r}^{eff}$ \\
-            \hline \hline
-            $\zeta_1$ (4) & 2.61 & 6.36e-1 & 2.99 & 4.10 & 2.62 \\ 
-            $\zeta_2$ & 1.25 & 2.95e-1 & 1.43 & 4.26 & 2.63 \\
-            $\zeta_3$ & 6.19e-1 & 1.43e-1& 7.03e-1 & 4.31 & 2.64 \\
-            $\zeta_4$ & 3.07e-1 & 7.10e-2 & 3.48e-1 & 4.32 & 2.64 \\
-		\end{tabular}
-		\caption{$f(x,y) = 8\pi^2\sin{2\pi x}\sin{2\pi y}k(x,y) - 2\pi\cos{2\pi x}\sin{2\pi y}(y-1)$ $+ 2\pi\sin{2\pi x}\cos{2\pi y}(x-1) $ and 
-		$k(x,y) = 1 + (x-1)(y-1)$}
-	\end{table}
-	
+\frametitle{Results in 2D}
+Data we work with:
+\begin{align*}
+f(x,y) &= 8\pi^2\sin{2\pi x}\sin{2\pi y}k(x,y) - 2\pi\cos{2\pi x}\sin{2\pi y}(y-1)+ \\ &2\pi\sin{2\pi x}\cos{2\pi y}(x-1) \\
+k(x,y) &= 1 + (x-1)(y-1) \\
+u(x,y) &= \sin(2\pi x)\sin(2\pi y)
+\end{align*}
+
+
+\end{frame}
+\begin{frame}
+\frametitle{Results in 2D}
+\begin{figure}
+\centering
+\includegraphics[width = 0.7\linewidth]{../../Images/convergence2d.jpg}
+\caption{Convergence of our method 2D}
+\end{figure}
+\end{frame}
+
+\begin{frame}[c]
+\frametitle{Results in 2D}
+\begin{table}[c]
+\begin{tabular}{c | c | c | c | c | c } 
+$\zeta$ & $\mathcal{M}$  & $\norm*{k^{\frac{1}{2}}\div e_v}$ & $\norm*{(e_v,e_r)}_{*}$ & $I_v^{eff}$ & $I_{v,r}^{eff}$ \\
+\hline \hline
+$\zeta_1$ (4) & 2.61 & 6.36e-1 & 2.99 & 4.10 & 2.62 \\ 
+$\zeta_2$ & 1.25 & 2.95e-1 & 1.43 & 4.26 & 2.63 \\
+$\zeta_3$ & 6.19e-1 & 1.43e-1& 7.03e-1 & 4.31 & 2.64 \\
+$\zeta_4$ & 3.07e-1 & 7.10e-2 & 3.48e-1 & 4.32 & 2.64 \\
+\end{tabular}
+\caption{2D - computations}
+\end{table}
+
 \end{frame}
 
 \begin{frame}
-	\frametitle{Results in 2D}
-	\begin{figure}
-		\centering
-		\includegraphics[width = 0.7\linewidth]{../../Images/errorcomparison2d.jpg}
-		\caption{$f(x,y) = 8\pi^2\sin{2\pi x}\sin{2\pi y}k(x,y) - 2\pi\cos{2\pi x}\sin{2\pi y}(y-1)$ $+ 2\pi\sin{2\pi x}\cos{2\pi y}(x-1) $ and 
-		$k(x,y) = 1 + (x-1)(y-1)$}
-	\end{figure}
+\frametitle{Results in 2D}
+\begin{figure}[t]
+\centering
+\includegraphics[width = 0.7\linewidth]{../../Images/errorcomparison2d.jpg}
+\caption{Comparison of some quantities in 2D}
+\end{figure}
 \end{frame}
 
 \begin{frame}
 \frametitle{Conclusion}
-\begin{itemize}
-	\item Relative error measures the error respect the approximated solution, not the real solution.
-	\item The problem arrives when we do not know the real solution: we can not use the efficiency index to know how accurate is our bound.
-	\item If we had a minorant we could study the gap between minorant and majorant to get conclusions about our bounds.
-\end{itemize}
+\begin{enumerate}
+\item The Runge-Kutta estimate gives an upper bound, but we do not know how far away the real error can be
+\item We are able to bound the combined energy-norm from below and above \textit{without knowing} the real solution
+\item After testing the method with problems where we know the true solution, we can trust it for problems with an unknown solution
+\end{enumerate}
 \end{frame}
 
 \begin{frame}
-	\frametitle{References}
-	\begin{enumerate}
-		\item[I] Lecture Notes Mat264: Computational Science II, Univisersitet i Bergen, Jan Nordbotten, Spring Semester 2021.
-		\item[II] Matlab files from Erlend.
-		\item[III]  \href{https://en.wikipedia.org/wiki/Heat_equation\#Specific_examples}{Wikipedia Heat equation}
-	\end{enumerate}
+\frametitle{References}
+\begin{enumerate}
+\item[I] Lecture Notes Mat264: Computational Science II, Univisersitet i Bergen, Prof. Jan Nordbotten, Spring Semester 2021.
+\item[II] Matlab files for 2D case, Mat264: Computational Science II, Univisersitet i Bergen,  Erlend Storvik, Spring Semester 2021.
+\item[III]  \href{https://en.wikipedia.org/wiki/Heat_equation\#Specific_examples}{Wikipedia Heat equation}
+\end{enumerate}
 \end{frame}
 
 \end{document}

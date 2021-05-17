@@ -1,6 +1,6 @@
 %%%%% Convergence of 1d method for f=4*pi*pi*sin(2*pi*x).*(2-x) + 2*pi*cos(2*pi*x) and k=2-x %%%%%
 
-function [err_conv, grid_size, err_calc, err_cons, err_v, err_flux] = convergence3(nx)
+function [err_conv, grid_size, err_calc, err_cons, err_v, err_flux, A] = convergence3(nx)
 
 % Poisson equation: -Div(k(x,y)Grad(u)) = f
 
