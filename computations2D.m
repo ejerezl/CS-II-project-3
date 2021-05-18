@@ -75,12 +75,12 @@ if flag == 0
     figure(1);
     subplot(1,2,1);
     U = reshape(u_fabricated_vect,nx,ny);
-    surf(X,Y, abs(U-V));
-    axis([0 1 0 1])
-    xlabel('x', 'FontSize', 16);
-    ylabel('y', 'FontSize', 16);
-    zlabel('abs(u_{true} - u_{analytical})', 'FontSize', 16);
-    title({'Absolute difference between analytical','and numerical potential'},'FontSize',14)
+    surf(X,Y, abs(U-V)./abs(U));
+    axis([0.1 0.9 0.1 0.9 0 0.04])
+    xlabel('x', 'FontSize', 18);
+    ylabel('y', 'FontSize', 18);
+    zlabel('Relative difference', 'FontSize', 18);
+    title({'Relative difference between analytical','and numerical potential'},'FontSize',17)
     subplot(1,2,2);
     q_1 = q_fabricated{1}(cells(:,1),cells(:,2));
     q_2 = q_fabricated{2}(cells(:,1),cells(:,2));
@@ -88,28 +88,31 @@ if flag == 0
     [r_1, r_2] = flux(G,K,v,cells,nx,ny);
     R = [r_1, r_2];
     norm_vector = zeros(400,1);
+    norm_r = zeros(400,1);
     for i = 1:400
-        norm_vector(i) = norm(q_1(i)-r_1(i),1);
+        norm_vector(i) = norm(q_1(i)-r_1(i),2);
+        norm_r(i) = norm(q_1(i),2);
     end
     norma = reshape(norm_vector, nx, ny);
     surf(X,Y, norma);
     axis([0 1 0.25 0.75 0 0.1])
-    xlabel('x', 'FontSize', 16);
-    ylabel('y', 'FontSize', 16);
-    zlabel('norm(q_{true} - q_{analytical})', 'FontSize', 16);
-    title({'Absolute difference between analytical','and numerical flux'},'FontSize',14)
+    xlabel('x', 'FontSize', 18);
+    ylabel('y', 'FontSize', 18);
+    zlabel('Relative difference', 'FontSize', 18);
+    title({'Relative difference between analytical','and numerical flux'},'FontSize',17)
 
 else
+    figure(2)
     loglog(grid_refinery, 3*majorant_values, '-o');
     hold on
     loglog(grid_refinery, majorant_values, '-o');
     loglog(grid_refinery, star_norm_values, '-o');
     loglog(grid_refinery, convergence_error, '-o');
     loglog(grid_refinery, energy_norm_values, '-o');
-    title('Error comparison');
-    legend({'3Majorant', 'Majorant', 'Star norm', 'Real error', 'Energy norm'}, 'Location','northwest')
-    xlabel('\Delta x')
-    ylabel('Error')
+    title('Error comparison', 'FontSize', 24);
+    legend({'3Majorant', 'Majorant', 'Star norm', 'Real error', 'Energy norm'}, 'Location','northwest', 'FontSize', 16)
+    xlabel('\Delta x', 'FontSize', 24)
+    ylabel('Error', 'FontSize', 24)
     hold off
     P = polyfit(log(grid_refinery), log(convergence_error),1);
     slope = P(1);
