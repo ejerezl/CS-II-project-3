@@ -50,7 +50,7 @@ end
 % create n logspaced grid widths
 n = 7;
 nx_start = 1e1;
-nx_end = 1e5;
+nx_end = 1e1;
 nx_vec = round(logspace(log10(nx_start), log10(nx_end), n));
 
 dx_vec = [];
@@ -109,7 +109,7 @@ if nx == nx_start
     subplot(1,2,1)
     plot(X,abs(u-u_fabricatedvec)./abs(u))
     xlabel('x', 'FontSize', 16)
-    ylabel('relative error','FontSize',16)
+    ylabel('relative difference','FontSize',16)
     title({'relative difference between analytical','and numerical potential'},'FontSize',14)
 
 %     X_plot = zeros(nx+3,1); %new grid
@@ -127,7 +127,7 @@ if nx == nx_start
     subplot(1,2,2)
     plot(E,abs(q_fabricatedvec-q)./abs(q))
     xlabel('x', 'FontSize', 16)
-    ylabel('relative error','FontSize',16)
+    ylabel('relative difference','FontSize',16)
     title({'relative difference between analytical','and numerical flux'},'FontSize',14)
 end    
     if ex == -1
