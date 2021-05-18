@@ -86,14 +86,15 @@ plot(X,Q_fabricated)
 xlabel('x')
 title('q_{fabricated}')
 
+c = [0, 0.4470, 0.7410];
 %Plot difference of solutions
 figure(3)
 X = (0:dx:1);
 subplot(1,2,1)
-plot(X,abs(u-U_fabricated))
+plot(X,abs(u-U_fabricated)/abs(U_fabricated), 'color', 'c')
 xlabel('x', 'FontSize', 16)
-ylabel('|u_{true} - u_{analytical}|','FontSize',16)
-title({'absolute difference between analytical','and numerical potential'},'FontSize',14)
+ylabel('relative error','FontSize',16)
+title({'relative difference between analytical','and numerical potential'},'FontSize',14)
 
 X = zeros(nx+1,1); %new grid
 X(1) = 0;
@@ -102,10 +103,10 @@ for i=2:nx
     X(i) = 0.5*dx + dx*(i-2);
 end
 subplot(1,2,2)
-plot(X,abs(Q_fabricated-q))
+plot(X,abs(Q_fabricated-q)/abs(Q_fabricated), 'color', 'c')
 xlabel('x', 'FontSize', 16)
-ylabel('|q_{true} - q_{analytical}|','FontSize',16)
-title({'absolute difference between analytical','and numerical flux'},'FontSize',14)
+ylabel('relative error','FontSize',16)
+title({'relative difference between analytical','and numerical flux'},'FontSize',14)
 
 %%%%% Error calculation & Convergence %%%%%
 

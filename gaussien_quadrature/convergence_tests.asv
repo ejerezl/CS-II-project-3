@@ -101,35 +101,34 @@ for nx = nx_vec
         % C_omega = candidates(idx(1));
         C_omega = 1 / sqrt(eigs(A, 1, 'smallestabs'));
     end
-    
-    %Plot difference of solutions
-if nx == nx_start 
-    figure(1)
-    u_fabricatedvec = u_fabricated(X).'; 
-    subplot(1,2,1)
-    plot(X,abs(u-u_fabricatedvec)./abs(u))
-    xlabel('x', 'FontSize', 16)
-    ylabel('relative error','FontSize',16)
-    title({'relative difference between analytical','and numerical potential'},'FontSize',14)
 
-%     X_plot = zeros(nx+3,1); %new grid
-%     X_plot(1) = 0;
-%     X_plot(end) = 1;
-%     for i=2:nx
-%         X_plot(i) = 0.5*dx + dx*(i-2);
-%     end
-    q_fabricatedvec = q_fabricated(E).';
-%     w = size(E);
-%     q_vec = zeros(w(2),1).';
-%     q_vec(1) = qL;
-%     q_vec(end) = qR;
-%     q_vec(2:end-1) = q;
-    subplot(1,2,2)
-    plot(E,abs(q_fabricatedvec-q)./abs(q))
-    xlabel('x', 'FontSize', 16)
-    ylabel('relative error','FontSize',16)
-    title({'relative difference between analytical','and numerical flux'},'FontSize',14)
-end    
+    %Plot difference of solutions
+ 
+figure(3)
+X = (0:dx:1);
+u_fabricated_vect = u_fabricated(cells(:,1)); 
+subplot(1,2,1)
+plot(X,abs(u-u_fabricated)/abs(u_fabricated))
+xlabel('x', 'FontSize', 16)
+ylabel('relative error','FontSize',16)
+title({'relative difference between analytical','and numerical potential'},'FontSize',14)
+
+X = zeros(nx+1,1); %new grid
+X(1) = 0;
+X(end) = 1;
+for i=2:nx
+    X(i) = 0.5*dx + dx*(i-2);
+end
+q_vec = zeros(nx+1,1);
+q(1) = qL;
+q(end) = qR;
+q(2:end-1) = q;
+subplot(1,2,2)
+plot(X,abs(u_fabricated-q_vec)/abs(u_fabricated))
+xlabel('x', 'FontSize', 16)
+ylabel('relative error','FontSize',16)
+title({'relative difference between analytical','and numerical flux'},'FontSize',14)
+    
     if ex == -1
         energy_ev = e_energy_norm(grad_u_fab, u, k1, E, dx, DX_u);
         k_er = e_k_flux(q_fabricated, q, qL, qR, k1, E, dx, DX_q);
@@ -261,8 +260,6 @@ green = [15, 192, 9] / 255;
 red = [255, 0, 0] / 255;
 black = [0,0,0];
 
-
-figure(2)
 yyaxis left
 title({'Error Comparison'}, 'FontSize', 15);
 loglog(dx_vec, 3*maj_vec, '-.^')
