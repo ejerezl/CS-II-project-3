@@ -207,6 +207,12 @@
 	
 	Overall, one can see that the estimate in the first case is not the best since it is 8-times bigger than the actual error, but one gets an impression of the margin of the error.
 	In the second case, the error is only two times bigger than the true error.
+	These results may occur from the choice of $k$ and $h_1$.
+	The theoretical background for this estimate states $h_1 \ll h_2 \ll 1$ but does not specify how much less this should be. 
+	Therefore, $k$ cannot be chosen too small, if $h_1$ and $h_2$ are too close to one. 
+	If $h_1$ is closer to one, this results in a less-accurate estimate and $k$ cannot be chosen to be too big. 
+	If $h_1$ is really small compared to one (note: we still have no way to quantify what "very small" means), $k$ can be chosen bigger as well and the estimate gets more accurate.
+	Overall, this makes the Runge-Kutta estimate hard to use if we do not know the real solution, since we do not know the range in which to choose $k$ accordingly to $h_1$.
 	
 	
 	\subsection*{Results in 2D}
