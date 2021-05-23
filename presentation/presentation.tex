@@ -156,7 +156,7 @@
 	
 	\begin{figure}
 		\centering
-		\includegraphics[width = 0.8\linewidth]{convergenceplot_k_f_constant.png}
+		\includegraphics[width = 0.8\linewidth]{diapos/convergenceplot_k_f_constant.png}
 		\caption{Error bounds for $k=1$ and $f=1$.}
 		\label{fig:kfconst}
 	\end{figure}
@@ -210,10 +210,10 @@
 	
 	
 	\subsection*{Results in 2D}
-	First thing we will check is the convergence of our method. As we know the real solution, we are computing the real error with our approximated solution. As we would expect, when we do decrease the size of each step (both x and y cause are the same), the error is less. This makes sense cause the approximations we are making are more accurate as we have more "boxes" with different data to approximate. The convergence is of order 2 as one can see in the graph:
-	In the graph we are plotting in a scale log log, so for knowing the order of convergence we just have to check the slope of the line we are plotting. As a comparison we have plotted too a line with a slope m = 2.
+	First ting we did was computing the difference in all our domain between the analytical and numerical solution. This can be seen in the following graph, where the error is not very big if we compare it with all our domain. We can notice that once we refine our division of the space, this error is smoother cause we are doing the computations with more precision. In this case we just wanted to check if the value of the error was reasonable, and as we have said: it is.
+	
 	\begin{center}
-		\includegraphics[width = 0.7\linewidth]{../Images/convergence2d.jpg}
+		\includegraphics[width = 0.9\linewidth]{../Images/relativeerror.jpg}
 	\end{center}
 	
 	Indeed, with this we can conclude that the order of convergence of our method is 2. Once we knew that, we start computing all previously mentioned. For that, see the following table where we can appreciate all inequalities we talked before:
@@ -227,11 +227,12 @@
 			$\zeta_3$ & 6.19e-1 & 1.43e-1& 7.03e-1 & 4.31 & 2.64 \\
 			$\zeta_4$ & 3.07e-1 & 7.10e-2 & 3.48e-1 & 4.32 & 2.64 \\
 		\end{tabular}
-		\caption{2D - computations}
+		\caption{$f(x,y) = 8\pi^2\sin{2\pi x}\sin{2\pi y}k(x,y) - 2\pi\cos{2\pi x}\sin{2\pi y}(y-1)$ $+ 2\pi\sin{2\pi x}\cos{2\pi y}(x-1) $ and 
+		$k(x,y) = 1 + (x-1)(y-1)$ with a grid refinement of $2^4$.}
 	\end{table}
 	
-	Indeed, one can easily check that the values of the combined efficiency index are between 1 and 3. Also we notice that the potential efficiency index tends to be a value of 4.3, which is not very good taking into consideration that the best we could get is 1. 
-	For seeing other inequalities more clearly we show in the following graph some quantities in the table, there one can se that indeed, the norm star is between the majorant and 3majorant, that the majorant is always bigger than the real error... etc.
+	One can easily check that the values of the combined efficiency index are between 1 and 3. Also we notice that the potential efficiency index tends to be a value of 4.3, which is not very good taking into consideration that the best we could get is 1. 
+	For seeing other inequalities more clearly we show in the following graph some quantities in the table, there one can se that indeed, the norm star is between the majorant and 3majorant, that the majorant is always bigger than the real error... etc. Also we can check the convergence of our method. As we would expect, when we do decrease the size of each step (both x and y cause are the same), the error is less. This makes sense cause the approximations we are making are more accurate as we have more "boxes" with different data to approximate. The convergence is of order 2 as one can see in the graph (we are plotting in a scale log log, so for knowing the order of convergence we just have to check the slope of the line we are plotting). 
 	\begin{center}
 		\includegraphics[width = 0.7\linewidth]{../Images/errorcomparison2d.jpg}
 	\end{center}
@@ -240,7 +241,6 @@
 	
 	\subsection*{Conclusion}
 	We have done computations for problems where we do know the real solution, to conclude I would like to consider a case where we do not know this real solution. Would our bound be good? We obviously can check that with the relative error, but nevertheless, it would measure how close it is to the approximated solution, not to the real solution. That's the reason why we use the efficiency index. With this last computation we have both a majorant and minorant of the efficiency index, the problem is that we need the real solution for computing the efficiency index. The conclusion then is that the ideal case would be if we have both a majorant and minorant of the quantity we are trying to measure. This way we could know how wide is our range of values for that quantity. If that range is small, we know that both minorant and majorant are giving a good bound. But in the case it is very large, we can not really tell anything about the data. (Example of our domain with our bound)
-	\subsection*{References}
-	All notes from INF264, code from Erlend, wikipedia
+	
 	
 \end{document}
