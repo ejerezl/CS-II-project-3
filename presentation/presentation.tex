@@ -216,13 +216,14 @@
 	
 	
 	\subsection*{Results in 2D}
-	First ting we did was computing the difference in all our domain between the analytical and numerical solution. This can be seen in the following graph, where the error is not very big if we compare it with all our domain. We can notice that once we refine our division of the space, this error is smoother cause we are doing the computations with more precision. In this case we just wanted to check if the value of the error was reasonable, and as we have said: it is.
+	First ting we did was computing the difference in all our domain between the analytical and numerical solution (Using relative difference). This can be seen in the following graph, where the error is not very big if we compare it with all our domain. We can notice that once we refine our division of the space, this error is smoother cause we are doing the computations with more precision. In this case we just wanted to check if the value of the error was reasonable, and as we have said: it is.
 	
 	\begin{center}
 		\includegraphics[width = 0.9\linewidth]{../Images/relativeerror.jpg}
 	\end{center}
 	
-	Indeed, with this we can conclude that the order of convergence of our method is 2. Once we knew that, we start computing all previously mentioned. For that, see the following table where we can appreciate all inequalities we talked before:
+	
+	
 	\begin{table}[h!]
 		\centering
 		\begin{tabular}{c | c | c | c | c | c }
@@ -236,7 +237,9 @@
 		\caption{$f(x,y) = 8\pi^2\sin{2\pi x}\sin{2\pi y}k(x,y) - 2\pi\cos{2\pi x}\sin{2\pi y}(y-1)$ $+ 2\pi\sin{2\pi x}\cos{2\pi y}(x-1) $ and 
 		$k(x,y) = 1 + (x-1)(y-1)$ with a grid refinement of $2^4$.}
 	\end{table}
+	One can see in the following table some numerical results computed for a refinement starting in $2^4$ and finishing in $2^7$. First thing one notice is that all our bound of the energy norm (the majorant) decreases as we do a higher refinement. This is some result we would totally expect. Also, the energy norm decreases too, in this case because our approximated solution is better as we refine more, and hence, the error does. Anyway, one can see that the bound is always higher than the quantity bounded as it should be. Other things to highlight are the efficiency indexes: as explained before, the one from the potential is better as we approaches 1 but in this case it tends to 4.33 (if we continue refining it will tend to 4.33 as we have checked). Indeed, that is not a very good number compared to some cases in the 1d case, but considering the complexity of the parameters we can say that it is not a bad result. On the other hand, the efficiency index of the potential remains between 1 and 3 as one can check. Same bounds happen with the star norm, that remains between $\mathcal{M}$ and $3\mathcal{M}$.\\
 	
+	To see this results better we look at the following graph
 	One can easily check that the values of the combined efficiency index are between 1 and 3. Also we notice that the potential efficiency index tends to be a value of 4.3, which is not very good taking into consideration that the best we could get is 1. 
 	For seeing other inequalities more clearly we show in the following graph some quantities in the table, there one can se that indeed, the norm star is between the majorant and 3majorant, that the majorant is always bigger than the real error... etc. Also we can check the convergence of our method. As we would expect, when we do decrease the size of each step (both x and y cause are the same), the error is less. This makes sense cause the approximations we are making are more accurate as we have more "boxes" with different data to approximate. The convergence is of order 2 as one can see in the graph (we are plotting in a scale log log, so for knowing the order of convergence we just have to check the slope of the line we are plotting). 
 	\begin{center}
