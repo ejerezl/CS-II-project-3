@@ -28,7 +28,7 @@ f_const = false;
 
 
 %Determine number of cells
-nx = 17;
+nx = 17*2;
 dx = 1/(nx-1);
 
 % Build matrices
@@ -248,7 +248,7 @@ else
     
     %Runge Kutta estimate type 1
     %2nd entry: Order of convergence, 3rd entry: ratio between h1 and h2
-    [err1, err2] = rktype1_3(nx, 1.1, 8); 
+    [err1, err2] = rktype1_3(nx, 1.1, 13); 
     fprintf('True error: %d.\n', err1);
     fprintf('Runge-Kutta estimate: %d.\n', err2);
     
